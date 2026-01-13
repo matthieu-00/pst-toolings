@@ -649,15 +649,16 @@ ${statistics.mostChangedColumns.map((col, i) => `${i + 1}. ${col.name}: ${col.co
               <div className="md:col-span-1 border-r pr-4">
                 <h3 className="font-semibold mb-3 text-sm">Columns Ranked by Differences</h3>
                 <div className="space-y-2 overflow-auto" style={{ maxHeight: 'calc(100vh - 400px)' }}>
-                  {displayedColumns.map(col => (
+                  {displayedColumns.map((col, idx) => (
                     <button
                       key={col.column}
                       onClick={() => setSelectedColumn(col.column)}
-                      className={`w-full text-left p-3 rounded border-2 transition-all ${
+                      className={`w-full text-left p-3 rounded border-2 transition-all animate-fadeIn ${
                         selectedColumn === col.column 
                           ? 'border-accent bg-accent/10' 
                           : 'border-gray-200 hover:border-border'
                       }`}
+                      style={{ animationDelay: `${idx * 30}ms` }}
                     >
                       <div className="flex justify-between items-start mb-1">
                         <div className="flex-1">
@@ -728,11 +729,12 @@ ${statistics.mostChangedColumns.map((col, i) => `${i + 1}. ${col.name}: ${col.co
                           {columnComparisons.find(c => c.column === selectedColumn)?.differences.map((diff, idx) => (
                             <tr 
                               key={idx}
-                              className={`border-b ${
+                              className={`border-b animate-fadeIn transition-colors duration-200 ${
                                 diff.status === 'added' ? 'bg-green-50' :
                                 diff.status === 'removed' ? 'bg-red-50' :
                                 diff.status === 'changed' ? 'bg-yellow-50' : ''
                               }`}
+                              style={{ animationDelay: `${idx * 20}ms` }}
                             >
                               <td className="p-2 font-mono text-muted-foreground">{diff.rowIndex + 1}</td>
                               <td className="p-2 font-mono">{diff.value1 || <span className="text-muted-foreground">—</span>}</td>

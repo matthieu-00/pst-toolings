@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Plus, ExternalLink, Copy, Check, MessageSquare, X, Trash2, GitBranch, Search, Filter, BarChart3, Tag, Calendar, Flag, Archive, Download, FileText, FileJson } from 'lucide-react';
+import { Plus, ExternalLink, Copy, Check, MessageSquare, X, Trash2, GitBranch, Search, BarChart3, Download, FileText, FileJson } from 'lucide-react';
 import { PageContainer } from '@/components/ui/page-container';
 import { PageHeader } from '@/components/ui/page-header';
 import { Card } from '@/components/ui/card';
@@ -1868,7 +1868,7 @@ const PRDeploymentTracker = () => {
 
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+          <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn">
             {toastMessage}
           </div>
         )}
@@ -1962,7 +1962,7 @@ const PRDeploymentTracker = () => {
                       {dragOverPosition && 
                        dragOverPosition.columnId === column.id && 
                        dragOverPosition.index === index && (
-                        <div className="h-20 bg-muted border-2 border-dashed border-border rounded-lg mb-3 flex items-center justify-center">
+                        <div className="h-20 bg-muted border-2 border-dashed border-border rounded-lg mb-3 flex items-center justify-center animate-pulse">
                           <span className="text-muted-foreground text-sm">Drop here</span>
                         </div>
                       )}
@@ -1980,7 +1980,7 @@ const PRDeploymentTracker = () => {
                           }
                           handleDragStart(e, card);
                         }}
-                        className={`bg-card border rounded-lg p-3 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 ease-out group ${
+                        className={`bg-card border rounded-lg p-3 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 ease-out group animate-fadeIn ${
                           selectedCards.includes(card.id) 
                             ? 'border-accent border-2 shadow-[0_0_0_2px_hsl(var(--accent)/0.1)]' 
                             : 'border-border'
@@ -1988,6 +1988,7 @@ const PRDeploymentTracker = () => {
                           style={{
                           opacity: draggedCard?.id === card.id || (draggedCard?.isMultiSelect && selectedCards.includes(card.id)) ? 0.3 : 1,
                           transform: draggedCard?.id === card.id || (draggedCard?.isMultiSelect && selectedCards.includes(card.id)) ? 'scale(0.95)' : undefined,
+                          animationDelay: `${index * 50}ms`,
                         }}
                       >
                         <div className="flex items-center justify-between">
@@ -2123,7 +2124,7 @@ const PRDeploymentTracker = () => {
                   {dragOverPosition && 
                    dragOverPosition.columnId === column.id && 
                    dragOverPosition.index === columnCards.length && (
-                    <div className="h-20 bg-muted border-2 border-dashed border-border rounded-lg flex items-center justify-center">
+                    <div className="h-20 bg-muted border-2 border-dashed border-border rounded-lg flex items-center justify-center animate-pulse">
                       <span className="text-muted-foreground text-sm">Drop here</span>
                     </div>
                   )}

@@ -63,18 +63,18 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
         </button>
         {isOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn"
             onClick={() => setIsOpen(false)}
           >
             <div
-              className="bg-card p-6 max-w-3xl max-h-[80vh] overflow-y-auto rounded-xl border border-border shadow-xl"
+              className="bg-card p-6 max-w-3xl max-h-[80vh] overflow-y-auto rounded-xl border border-border shadow-xl animate-scaleIn"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-foreground">Help</h2>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-all duration-200 hover:rotate-90"
                   aria-label="Close help"
                 >
                   <svg

@@ -31,13 +31,13 @@ function Navigation() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-all duration-200 hover:scale-[1.02] ${
                     isActive
                       ? 'border-primary text-primary'
                       : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
                   }`}
                 >
-                  {Icon && <Icon className="w-4 h-4" />}
+                  {Icon && <Icon className="w-4 h-4 transition-transform duration-200" />}
                   {item.label}
                 </Link>
               )
@@ -64,10 +64,11 @@ function Home() {
         <div className="grid md:grid-cols-2 gap-6">
           <Link
             to="/code-renderer"
-            className="p-6 border rounded-lg hover:bg-accent transition-colors group"
+            className="p-6 border rounded-lg hover:bg-accent transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg animate-fadeInUp"
+            style={{ animationDelay: '0ms' }}
           >
             <div className="flex items-center gap-3 mb-2">
-              <Code className="w-6 h-6 text-primary" />
+              <Code className="w-6 h-6 text-primary transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3" />
               <h2 className="text-xl font-semibold">Code Renderer</h2>
             </div>
             <p className="text-muted-foreground">
@@ -77,10 +78,11 @@ function Home() {
 
           <Link
             to="/spreadsheet-diff"
-            className="p-6 border rounded-lg hover:bg-accent transition-colors group"
+            className="p-6 border rounded-lg hover:bg-accent transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg animate-fadeInUp"
+            style={{ animationDelay: '100ms' }}
           >
             <div className="flex items-center gap-3 mb-2">
-              <FileSpreadsheet className="w-6 h-6 text-primary" />
+              <FileSpreadsheet className="w-6 h-6 text-primary transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3" />
               <h2 className="text-xl font-semibold">Spreadsheet Diff</h2>
             </div>
             <p className="text-muted-foreground">
@@ -90,10 +92,11 @@ function Home() {
 
           <Link
             to="/deployment-tracker"
-            className="p-6 border rounded-lg hover:bg-accent transition-colors group"
+            className="p-6 border rounded-lg hover:bg-accent transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg animate-fadeInUp"
+            style={{ animationDelay: '200ms' }}
           >
             <div className="flex items-center gap-3 mb-2">
-              <GitBranch className="w-6 h-6 text-primary" />
+              <GitBranch className="w-6 h-6 text-primary transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3" />
               <h2 className="text-xl font-semibold">Deployment Tracker</h2>
             </div>
             <p className="text-muted-foreground">
@@ -103,10 +106,11 @@ function Home() {
 
           <Link
             to="/json-extractor"
-            className="p-6 border rounded-lg hover:bg-accent transition-colors group"
+            className="p-6 border rounded-lg hover:bg-accent transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg animate-fadeInUp"
+            style={{ animationDelay: '300ms' }}
           >
             <div className="flex items-center gap-3 mb-2">
-              <Database className="w-6 h-6 text-primary" />
+              <Database className="w-6 h-6 text-primary transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3" />
               <h2 className="text-xl font-semibold">JSON Extractor</h2>
             </div>
             <p className="text-muted-foreground">
@@ -120,16 +124,20 @@ function Home() {
 }
 
 function App() {
+  const location = useLocation()
+  
   return (
     <ThemeProvider>
       <Navigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/code-renderer" element={<LiveCodeRenderer />} />
-        <Route path="/spreadsheet-diff" element={<SpreadsheetComparator />} />
-        <Route path="/deployment-tracker" element={<PRDeploymentTracker />} />
-        <Route path="/json-extractor" element={<JsonExtractor />} />
-      </Routes>
+      <div key={location.pathname} className="animate-fadeIn">
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/code-renderer" element={<LiveCodeRenderer />} />
+          <Route path="/spreadsheet-diff" element={<SpreadsheetComparator />} />
+          <Route path="/deployment-tracker" element={<PRDeploymentTracker />} />
+          <Route path="/json-extractor" element={<JsonExtractor />} />
+        </Routes>
+      </div>
     </ThemeProvider>
   )
 }

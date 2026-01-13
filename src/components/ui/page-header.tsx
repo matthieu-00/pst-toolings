@@ -20,13 +20,13 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
         {...props}
       >
         <div className="flex items-center gap-3 flex-1">
-          {Icon && <Icon className="w-6 h-6 md:w-8 md:h-8 text-foreground flex-shrink-0" />}
+          {Icon && <Icon className="w-6 h-6 md:w-8 md:h-8 text-foreground flex-shrink-0 animate-fadeInRotate" />}
           <div className="flex-1">
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground animate-slideInLeft">
               {title}
             </h1>
             {description && (
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-1 animate-fadeIn" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
                 {description}
               </p>
             )}

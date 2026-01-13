@@ -37,7 +37,7 @@ const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
     return (
       <div
         ref={ref}
-        className={cn(pageContainerVariants({ variant, maxWidth }), className)}
+        className={cn(pageContainerVariants({ variant, maxWidth }), "animate-fadeInUp", className)}
         {...props}
       />
     )

@@ -765,16 +765,16 @@ export default function JsonExtractor() {
         <div key={key} className="relative group" title={tooltipText}>
           <button
             onClick={() => toggleKey(key)}
-            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${
+            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all active:scale-95 ${
               selectedKeys.has(key) 
                 ? 'bg-muted text-foreground border-muted' 
                 : 'bg-card text-foreground border-border'
             }`}
           >
             {selectedKeys.has(key) ? (
-              <CheckSquare className="w-4 h-4 flex-shrink-0" />
+              <CheckSquare className="w-4 h-4 flex-shrink-0 transition-transform duration-200" />
             ) : (
-              <Square className="w-4 h-4 flex-shrink-0" />
+              <Square className="w-4 h-4 flex-shrink-0 transition-transform duration-200" />
             )}
             <span className="text-sm mr-1" style={{ color: statusColor }}>{statusIcon}</span>
             <span className="truncate text-sm flex-1">{key}</span>
@@ -807,16 +807,16 @@ export default function JsonExtractor() {
         <div key={key} className="relative group">
           <button
             onClick={() => toggleKey(key)}
-            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${
+            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all active:scale-95 ${
               selectedKeys.has(key) 
                 ? 'bg-accent text-accent-foreground border border-accent' 
                 : 'bg-card text-foreground border border-border'
             }`}
           >
             {selectedKeys.has(key) ? (
-              <CheckSquare className="w-4 h-4 flex-shrink-0" />
+              <CheckSquare className="w-4 h-4 flex-shrink-0 transition-transform duration-200" />
             ) : (
-              <Square className="w-4 h-4 flex-shrink-0" />
+              <Square className="w-4 h-4 flex-shrink-0 transition-transform duration-200" />
             )}
             <span className="truncate text-sm flex-1">{key}</span>
             <span 
@@ -1042,7 +1042,7 @@ export default function JsonExtractor() {
                 onDragLeave={() => setDragActive(false)}
                 onDrop={handleFileDrop}
                 className={`border-2 border-dashed rounded-lg p-4 transition-colors ${
-                  dragActive ? 'border-accent bg-accent/10' : 'border-border'
+                  dragActive ? 'border-accent bg-accent/10 animate-pulse' : 'border-border'
                 }`}
               >
                 <Textarea
@@ -1253,14 +1253,14 @@ export default function JsonExtractor() {
                           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg mb-2 transition-colors bg-muted text-foreground border border-border"
                         >
                           {collapsedGroups.has(groupName) ? (
-                            <ChevronRight className="w-4 h-4" />
+                            <ChevronRight className="w-4 h-4 transition-transform duration-200" />
                           ) : (
-                            <ChevronDown className="w-4 h-4" />
+                            <ChevronDown className="w-4 h-4 transition-transform duration-200 rotate-90" />
                           )}
                           <span className="font-semibold">{groupName} ({groupFields.length})</span>
                         </button>
                         {!collapsedGroups.has(groupName) && (
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ml-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ml-6 transition-all duration-300 animate-fadeIn">
                             {groupFields.map(renderFieldCheckbox)}
                           </div>
                         )}
@@ -1405,7 +1405,7 @@ export default function JsonExtractor() {
                                       title="Copy field path"
                                     >
                                       {copiedField === key ? (
-                                        <Check className="w-3 h-3 text-green-500" />
+                                        <Check className="w-3 h-3 text-green-500 animate-scaleIn" />
                                       ) : (
                                         <Copy className="w-3 h-3" />
                                       )}
@@ -1466,7 +1466,7 @@ export default function JsonExtractor() {
                                         title="Copy value"
                                       >
                                         {copiedField === 'value' ? (
-                                          <Check className="w-3 h-3 text-green-500" />
+                                          <Check className="w-3 h-3 text-green-500 animate-scaleIn" />
                                         ) : (
                                           <Copy className="w-3 h-3" />
                                         )}

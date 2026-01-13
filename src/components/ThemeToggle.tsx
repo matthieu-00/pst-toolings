@@ -15,12 +15,12 @@ export function ThemeToggle() {
     >
       {theme === 'light' ? (
         <>
-          <Moon className="h-4 w-4" />
+          <Moon className="h-4 w-4 transition-transform duration-300 hover:rotate-12" />
           <span className="hidden sm:inline">Dark</span>
         </>
       ) : (
         <>
-          <Sun className="h-4 w-4" />
+          <Sun className="h-4 w-4 transition-transform duration-300 hover:rotate-180" />
           <span className="hidden sm:inline">Light</span>
         </>
       )}

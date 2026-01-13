@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, AlertCircle, Copy, Check, Upload, Terminal, Maximize2, Minimize2, RotateCcw, X, Code, Download, Share2, Save, FileText, Type, WrapText, ZoomIn, ZoomOut, Search, Settings } from 'lucide-react';
+import { Play, AlertCircle, Upload, Terminal, Maximize2, Minimize2, RotateCcw, X, Code, Download, Share2, Save, FileText, Type, WrapText, ZoomIn, ZoomOut, Search, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { PageHeader } from '@/components/ui/page-header';
@@ -46,7 +46,6 @@ export default function LiveCodeRenderer() {
   const [renderedComponent, setRenderedComponent] = useState<RenderedComponentType>(null);
   const [error, setError] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [librariesReady, setLibrariesReady] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -324,8 +323,6 @@ window.customAlert = function() {
     const url = `${window.location.origin}${window.location.pathname}?code=${encoded}&mode=${renderMode}`;
     navigator.clipboard.writeText(url);
     addLog('success', 'Shareable URL copied to clipboard');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   // CR-EW-05: Code Snippets
@@ -435,6 +432,7 @@ window.customAlert = function() {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
+    return undefined;
   }, [showSnippetsMenu]);
 
   const handleClearRender = () => {
@@ -734,13 +732,6 @@ window.customAlert = function() {
         setIsRendering(false);
       }
     }, 100);
-  };
-
-  const copyCode = async () => {
-    const currentCode = renderMode === 'combined' ? combinedCode[activeEditorTab as keyof CombinedCode] : code;
-    await navigator.clipboard.writeText(currentCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleFileImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1128,12 +1119,12 @@ window.customAlert = function() {
                 </div>
               </div>
               {renderMode === 'combined' && (
-                <div className="flex gap-1 border-l pl-4 ml-4">
+                <div className="flex gap-1 border-l pl-4 ml-4 relative">
                   {(['tsx', 'html', 'css', 'js'] as const).map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveEditorTab(tab)}
-                      className={`text-sm font-semibold px-4 py-1.5 rounded border transition-all ${
+                      className={`text-sm font-semibold px-4 py-1.5 rounded border transition-all duration-300 relative ${
                         activeEditorTab === tab
                           ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
                           : 'bg-background text-muted-foreground border-border hover:border-blue-400 hover:text-foreground'
@@ -1226,7 +1217,7 @@ window.customAlert = function() {
             <div className="flex gap-2">
               <button
                 onClick={() => setActiveTab('preview')}
-                className={`text-sm font-semibold px-3 py-1 rounded transition-colors ${
+                className={`text-sm font-semibold px-3 py-1 rounded transition-all duration-300 ${
                   activeTab === 'preview' ? 'bg-background text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -1234,7 +1225,7 @@ window.customAlert = function() {
               </button>
               <button
                 onClick={() => setActiveTab('logs')}
-                className={`text-sm font-semibold px-3 py-1 rounded transition-colors flex items-center gap-1 ${
+                className={`text-sm font-semibold px-3 py-1 rounded transition-all duration-300 flex items-center gap-1 ${
                   activeTab === 'logs' ? 'bg-background text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -1258,23 +1249,26 @@ window.customAlert = function() {
           </div>
           <div className="flex-1 overflow-auto">
             {activeTab === 'logs' ? (
-              <div className="p-4 font-display text-xs space-y-2">
+              <div className="p-4 font-display text-xs space-y-2 animate-fadeIn">
                 {logs.length === 0 ? (
                   <div className="text-muted-foreground text-center py-12">No logs yet. Click "Render" to see output.</div>
                 ) : (
                   logs.map((log, index) => (
                     <div
                       key={index}
-                      className={`flex gap-2 ${
+                      className={`flex gap-2 animate-fadeIn`}
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <span className={`${
                         log.type === 'error' ? 'text-red-600' :
                         log.type === 'warn' ? 'text-yellow-600' :
                         log.type === 'success' ? 'text-green-600' :
                         'text-muted-foreground'
-                      }`}
-                    >
-                      <span className="text-muted-foreground">[{log.timestamp}]</span>
-                      <span className="font-semibold uppercase">{log.type}:</span>
-                      <span>{log.message}</span>
+                      }`}>
+                        <span className="text-muted-foreground">[{log.timestamp}]</span>
+                        <span className="font-semibold uppercase">{log.type}:</span>
+                        <span>{log.message}</span>
+                      </span>
                     </div>
                   ))
                 )}
@@ -1313,12 +1307,12 @@ window.customAlert = function() {
             ) : htmlContent ? (
               <iframe
                 srcDoc={htmlContent}
-                className="w-full h-full border-0"
+                className="w-full h-full border-0 animate-fadeIn"
                 sandbox="allow-scripts allow-forms allow-modals"
                 title="HTML Preview"
               />
             ) : RenderedComponent && typeof RenderedComponent === 'function' ? (
-              <div className="p-6 font-sans">
+              <div className="p-6 font-sans animate-fadeIn">
                 {React.createElement(RenderedComponent)}
               </div>
             ) : (

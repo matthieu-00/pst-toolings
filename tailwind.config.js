@@ -75,6 +75,45 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeInScale: {
+          '0%': { opacity: '0', transform: 'scale(0.98)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-10px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(10px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.8)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        fadeInRotate: {
+          '0%': { opacity: '0', transform: 'rotate(-5deg)' },
+          '100%': { opacity: '1', transform: 'rotate(0)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.3s ease-out',
+        fadeInUp: 'fadeInUp 0.4s ease-out',
+        fadeInScale: 'fadeInScale 0.3s ease-out',
+        slideInLeft: 'slideInLeft 0.4s ease-out',
+        slideInRight: 'slideInRight 0.3s ease-out',
+        scaleIn: 'scaleIn 0.2s ease-out',
+        fadeInRotate: 'fadeInRotate 0.4s ease-out',
+      },
     },
   },
   plugins: [],
