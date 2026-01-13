@@ -46,24 +46,24 @@
 
   .dark {
     /* Dark mode - using Charcoal backgrounds, Soft White text */
-    --background: 220 13% 23%; /* Charcoal #333843 */
-    --foreground: 220 14% 97%; /* Soft White #F5F6F8 */
-    --card: 220 13% 20%; /* Slightly darker Charcoal */
-    --card-foreground: 220 14% 97%; /* Soft White #F5F6F8 */
-    --popover: 220 13% 23%; /* Charcoal #333843 */
-    --popover-foreground: 220 14% 97%; /* Soft White #F5F6F8 */
+    --background: 0 0% 23%; /* Neutral Charcoal */
+    --foreground: 0 0% 97%; /* Soft White */
+    --card: 0 0% 20%; /* Slightly darker Neutral Charcoal */
+    --card-foreground: 0 0% 97%; /* Soft White */
+    --popover: 0 0% 23%; /* Neutral Charcoal */
+    --popover-foreground: 0 0% 97%; /* Soft White */
     --primary: 205 80% 81%; /* Ice Blue #A9D5F5 */
-    --primary-foreground: 220 13% 23%; /* Charcoal #333843 */
-    --secondary: 220 13% 30%; /* Darker than Charcoal */
-    --secondary-foreground: 220 14% 97%; /* Soft White #F5F6F8 */
-    --muted: 220 13% 30%; /* Darker than Charcoal */
-    --muted-foreground: 220 9% 64%; /* Medium Grey #9BA0AA */
+    --primary-foreground: 0 0% 23%; /* Neutral Charcoal */
+    --secondary: 0 0% 30%; /* Neutral Grey */
+    --secondary-foreground: 0 0% 97%; /* Soft White */
+    --muted: 0 0% 30%; /* Neutral Grey */
+    --muted-foreground: 0 0% 64%; /* Medium Grey */
     --accent: 205 80% 81%; /* Ice Blue #A9D5F5 */
-    --accent-foreground: 220 13% 23%; /* Charcoal #333843 */
+    --accent-foreground: 0 0% 23%; /* Neutral Charcoal */
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 220 14% 97%; /* Soft White #F5F6F8 */
-    --border: 220 10% 86%; /* Light Grey #D7D9DE */
-    --input: 220 13% 30%; /* Darker than Charcoal */
+    --destructive-foreground: 0 0% 97%; /* Soft White */
+    --border: 0 0% 40%; /* Neutral Grey Border */
+    --input: 0 0% 30%; /* Neutral Grey */
     --ring: 205 80% 81%; /* Ice Blue #A9D5F5 */
     
     /* Semantic Type Colors - JSON Data Types */
@@ -72,7 +72,7 @@
     --type-boolean: 120 73% 70%; /* Green - slightly darker for contrast */
     --type-array: 15 100% 70%; /* Orange - slightly darker for contrast */
     --type-object: 300 47% 70%; /* Purple - slightly darker for contrast */
-    --type-null: 210 10% 60%; /* Gray - lighter for dark mode */
+    --type-null: 0 0% 60%; /* Neutral Gray - lighter for dark mode */
     
     /* Semantic Status Colors - Comparison States */
     --status-match: 120 73% 70%; /* Green - matches type-boolean */
