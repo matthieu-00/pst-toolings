@@ -4,6 +4,8 @@ import SpreadsheetComparator from './spreadsheetdiff'
 import PRDeploymentTracker from './deploymenttrracker'
 import JsonExtractor from './jsonextractor'
 import { Code, FileSpreadsheet, GitBranch, Database } from 'lucide-react'
+import { ThemeProvider } from './contexts/ThemeContext'
+import { ThemeToggle } from './components/ThemeToggle'
 import './App.css'
 
 function Navigation() {
@@ -20,25 +22,28 @@ function Navigation() {
   return (
     <nav className="border-b bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex space-x-8">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive = location.pathname === item.path
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
-                }`}
-              >
-                {Icon && <Icon className="w-4 h-4" />}
-                {item.label}
-              </Link>
-            )
-          })}
+        <div className="flex items-center justify-between">
+          <div className="flex space-x-8">
+            {navItems.map((item) => {
+              const Icon = item.icon
+              const isActive = location.pathname === item.path
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
+                    isActive
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
+                  }`}
+                >
+                  {Icon && <Icon className="w-4 h-4" />}
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
+          <ThemeToggle />
         </div>
       </div>
     </nav>
@@ -116,7 +121,7 @@ function Home() {
 
 function App() {
   return (
-    <>
+    <ThemeProvider>
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -125,7 +130,7 @@ function App() {
         <Route path="/deployment-tracker" element={<PRDeploymentTracker />} />
         <Route path="/json-extractor" element={<JsonExtractor />} />
       </Routes>
-    </>
+    </ThemeProvider>
   )
 }
 

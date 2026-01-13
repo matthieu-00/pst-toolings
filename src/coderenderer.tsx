@@ -15,7 +15,7 @@ export default function LiveCodeRenderer() {
       <p className="text-lg mb-4">Count: {count}</p>
       <button 
         onClick={() => setCount(count + 1)}
-        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        className="px-6 py-2 bg-accent text-accent-foreground rounded-lg hover:bg-accent/90"
       >
         Increment
       </button>
@@ -439,12 +439,7 @@ window.customAlert = function() {
   const RenderedComponent = renderedComponent;
 
   return (
-    <div className="h-screen flex flex-col bg-background" style={{ fontFamily: "'Source Code Pro', monospace" }}>
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&family=Nixie+One&display=swap');
-        `}
-      </style>
+    <div className="h-screen flex flex-col bg-background">
       <div className="border-b px-6 py-4 bg-card">
         <h1 className="text-2xl font-bold">Live Code Renderer</h1>
         <p className="text-sm text-muted-foreground mt-1">Render TSX, HTML/CSS/JS, or combined code live in your browser</p>
@@ -455,7 +450,7 @@ window.customAlert = function() {
             onClick={() => setRenderMode('tsx')}
             className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
               renderMode === 'tsx' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-accent text-accent-foreground' 
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
@@ -475,7 +470,7 @@ window.customAlert = function() {
             onClick={() => setRenderMode('combined')}
             className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
               renderMode === 'combined' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-accent text-accent-foreground' 
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
@@ -542,7 +537,7 @@ window.customAlert = function() {
             <textarea
               value={renderMode === 'combined' ? combinedCode[activeEditorTab] : code}
               onChange={(e) => renderMode === 'combined' ? updateCombinedCode(activeEditorTab, e.target.value) : setCode(e.target.value)}
-              className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-slate-950 text-slate-100 border-0"
+              className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-background text-foreground border-0"
               placeholder={renderMode === 'combined' ? `Paste your ${activeEditorTab.toUpperCase()} code here...` : "Paste your code here..."}
               spellCheck={false}
             />
@@ -610,7 +605,7 @@ window.customAlert = function() {
             ) : initialLoading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-3" />
+                  <div className="w-12 h-12 border-4 border-accent/20 border-t-accent rounded-full animate-spin mx-auto mb-3" />
                   <p className="text-muted-foreground">Loading libraries...</p>
                 </div>
               </div>
@@ -634,7 +629,7 @@ window.customAlert = function() {
             ) : isRendering ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-3" />
+                  <div className="w-12 h-12 border-4 border-accent/20 border-t-accent rounded-full animate-spin mx-auto mb-3" />
                   <p className="text-muted-foreground">Rendering component...</p>
                 </div>
               </div>
