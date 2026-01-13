@@ -1,5 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Plus, ExternalLink, Copy, Check, MessageSquare, X, Info, Trash2 } from 'lucide-react';
+import { Plus, ExternalLink, Copy, Check, MessageSquare, X, Info, Trash2, GitBranch } from 'lucide-react';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageHeader } from '@/components/ui/page-header';
+import { Card } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/input';
+import { HelpTooltip } from '@/components/ui/help-tooltip';
 
 const PRDeploymentTracker = () => {
   const [inputUrls, setInputUrls] = useState('');
@@ -12,7 +17,6 @@ const PRDeploymentTracker = () => {
   const [titleInput, setTitleInput] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const dragScrollIntervalRef = useRef(null);
-  const [showHelp, setShowHelp] = useState(false);
   const [dragOverPosition, setDragOverPosition] = useState(null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -487,11 +491,15 @@ const PRDeploymentTracker = () => {
     
     // Style the drag image with prominent glow effect
     const dragElement = e.target.cloneNode(true);
+    const root = document.documentElement;
+    const isDark = root.classList.contains('dark');
     dragElement.style.transform = 'translateY(-4px)';
-    dragElement.style.boxShadow = '0 8px 25px rgba(0,0,0,0.25)';
-    dragElement.style.border = '2px solid rgba(59, 130, 246, 0.4)';
+    dragElement.style.boxShadow = isDark 
+      ? '0 8px 25px hsl(var(--foreground) / 0.25)' 
+      : '0 8px 25px hsl(var(--foreground) / 0.15)';
+    dragElement.style.border = `2px solid hsl(var(--accent) / 0.4)`;
     dragElement.style.borderRadius = '8px';
-    dragElement.style.backgroundColor = 'white';
+    dragElement.style.backgroundColor = `hsl(var(--background))`;
     dragElement.style.opacity = '1';
     
     // Create drag image
@@ -939,174 +947,127 @@ const PRDeploymentTracker = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="bg-card border-2 border-accent rounded-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl text-accent" style={{ fontFamily: '"Quicksand", sans-serif', fontWeight: 700 }}>GitHub PR Deployment Tracker</h1>
-            <button 
-              onClick={() => setShowHelp(!showHelp)}
-              className="w-8 h-8 bg-accent rounded flex items-center justify-center hover:bg-accent/90 transition-colors"
-            >
-              <Info size={16} className="text-accent-foreground" />
-            </button>
-          </div>
-          <p className="text-muted-foreground mb-4">Track your GitHub PRs through the deployment verification process.</p>
-          
-          {/* Input Section */}
-          <div className="space-y-4">
-            <textarea
-              value={inputUrls}
-              onChange={(e) => setInputUrls(e.target.value)}
-              placeholder="Paste GitHub PR URLs here (one per line)&#10;Example:&#10;https://github.com/owner/repo/pull/123&#10;https://github.com/owner/repo/pull/456"
-              className="w-full h-32 p-3 border border-border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-background text-foreground"
-            />
-            <button
-              onClick={addCards}
-              disabled={!inputUrls.trim()}
-              className="bg-accent text-accent-foreground px-6 py-2 rounded-lg hover:bg-accent/90 disabled:bg-muted disabled:cursor-not-allowed flex items-center gap-2"
-              style={{ fontFamily: '"Roboto", sans-serif' }}
-            >
-              <Plus size={20} />
-              Add PRs to Tracker
-            </button>
-          </div>
-          
-          {/* Help Modal */}
-          {showHelp && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setShowHelp(false)}>
-              <div className="bg-white p-6 max-w-3xl max-h-96 overflow-y-auto rounded-xl"
-                   style={{ borderRadius: '12px' }}
-                   onClick={(e) => e.stopPropagation()}>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl text-gray-900" style={{ fontFamily: '"Quicksand", sans-serif', fontWeight: 700 }}>
-                    PR Deployment Tracker: Usage Guide
-                  </h2>
-                  <button 
-                    onClick={() => setShowHelp(false)}
-                    className="text-gray-500 hover:text-gray-700 transition-colors"
-                    aria-label="Close Help Modal"
-                  >
-                    <X size={24} />
-                  </button>
-                </div>
-                
-                <div className="space-y-6 text-sm">
-                  {/* Adding PRs */}
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">
-                      Adding Pull Requests
-                    </h3>
-                    <p className="text-gray-700 mb-2">
-                      Enter one GitHub PR URL per line in the text area, then select <strong>Add PRs to Tracker</strong>.
-                    </p>
-                    <div className="text-muted-foreground text-xs space-y-1">
-                      <p>• Paste individual URLs or complete exported tracker data</p>
-                      <p>• Multi-column imports automatically populate all sections with titles, notes, and column positions</p>
-                    </div>
-                  </div>
-                  
-                  {/* Managing Cards */}
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">
-                      Managing Cards
-                    </h3>
-                    <p className="text-gray-700 mb-2">
-                      Drag cards between columns to monitor deployment progress.
-                    </p>
-                    <div className="text-muted-foreground text-xs space-y-1">
-                      <p>• Drag cards within a column to reorder items</p>
-                      <p>• Auto-scroll activates when dragging to screen edges</p>
-                      <p>• <strong>Ctrl+Click</strong> (or <strong>Cmd+Click</strong> on Mac) to multi-select cards</p>
-                      <p>• Drag any selected card to move all selected cards to a new column</p>
-                      <p>• Selected cards show a blue border for clear visual feedback</p>
-                      <p>• Hover over cards to access note, link, and delete options</p>
-                    </div>
-                  </div>
-                  
-                  {/* Editing */}
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">
-                      Editing Cards
-                    </h3>
-                    <p className="text-gray-700 mb-2">
-                      Click any card title to customize its name (e.g., "Login Bug Fix").
-                    </p>
-                    <div className="text-muted-foreground text-xs space-y-1">
-                      <p>• Hover to access note and link buttons for each card</p>
-                      <p>• Add notes up to 150 characters for context (e.g., "requires API update")</p>
-                      <p>• Include Asana URLs in notes for release list generation</p>
-                      <p>• Click trash icon to delete cards (with confirmation)</p>
-                    </div>
-                  </div>
-                  
-                  {/* Sharing */}
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">
-                      Sharing and Exporting
-                    </h3>
-                    <p className="text-gray-700 mb-2">
-                      Two export options available for different use cases:
-                    </p>
-                    <div className="text-muted-foreground text-xs space-y-2 ml-2">
-                      <div>
-                        <p className="font-semibold text-gray-700">Copy Full Status Report:</p>
-                        <p>Complete technical report with GitHub URLs, custom titles, notes, and timestamp</p>
-                        <p className="text-gray-500">Best for: Team handoffs, daily standups, complete backup/restore</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-700">Copy Release List:</p>
-                        <p>Clean list with titles and Asana links (when available in notes)</p>
-                        <p className="text-gray-500">Best for: Stakeholder updates, release documentation</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-700">Column Copy:</p>
-                        <p>Click copy button on any column header to export just that column</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Keyboard Shortcuts */}
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-3">
-                      Keyboard Shortcuts
-                    </h3>
-                    <div className="text-gray-700 text-sm space-y-2">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono bg-muted px-2 py-1 rounded text-xs">Enter</span>
-                        <span>Save edits to titles or notes</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono bg-muted px-2 py-1 rounded text-xs">Ctrl+Click</span>
-                        <span>Multi-select cards (Cmd+Click on Mac)</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono bg-muted px-2 py-1 rounded text-xs">Escape</span>
-                        <span>Cancel editing or clear multi-selection</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <ExternalLink size={16} className="text-accent" />
-                        <span>Click the external link icon to open the PR in a new tab</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+  const helpContent = (
+    <div className="space-y-6 text-sm">
+      {/* Overview */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Overview
+        </h3>
+        <p className="text-foreground mb-2">
+          Track your GitHub Pull Requests through the deployment verification process. Organize PRs into columns, add notes, and export status reports.
+        </p>
+      </div>
+
+      {/* Adding PRs */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Adding Pull Requests
+        </h3>
+        <p className="text-foreground mb-2">
+          Enter one GitHub PR URL per line in the text area, then select <strong>Add PRs to Tracker</strong>.
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Paste individual URLs or complete exported tracker data</p>
+          <p>• Multi-column imports automatically populate all sections with titles, notes, and column positions</p>
         </div>
+      </div>
+      
+      {/* Managing Cards */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Managing Cards
+        </h3>
+        <p className="text-foreground mb-2">
+          Drag cards between columns to monitor deployment progress.
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Drag cards within a column to reorder items</p>
+          <p>• Auto-scroll activates when dragging to screen edges</p>
+          <p>• <strong>Ctrl+Click</strong> (or <strong>Cmd+Click</strong> on Mac) to multi-select cards</p>
+          <p>• Drag any selected card to move all selected cards to a new column</p>
+          <p>• Selected cards show a blue border for clear visual feedback</p>
+          <p>• Hover over cards to access note, link, and delete options</p>
+        </div>
+      </div>
+      
+      {/* Editing */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Editing Cards
+        </h3>
+        <p className="text-foreground mb-2">
+          Click any card title to customize its name (e.g., "Login Bug Fix").
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Hover to access note and link buttons for each card</p>
+          <p>• Add notes up to 150 characters for context (e.g., "requires API update")</p>
+          <p>• Include Asana URLs in notes for release list generation</p>
+        </div>
+      </div>
+      
+      {/* Exporting */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Exporting Data
+        </h3>
+        <p className="text-foreground mb-2">
+          Use the column headers to copy column data or export full status reports.
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Click column header buttons to copy column-specific data</p>
+          <p>• Export full status reports with all PRs, notes, and timestamps</p>
+          <p>• Generate release lists with Asana links from card notes</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <PageContainer variant="default" maxWidth="xl">
+      {/* Header */}
+      <Card variant="accent" padding="lg" className="mb-6">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <PageHeader
+            icon={GitBranch}
+            title="GitHub PR Deployment Tracker"
+            description="Track your GitHub PRs through the deployment verification process."
+          />
+          <HelpTooltip
+            content={helpContent}
+            variant="modal"
+            icon="info"
+          />
+        </div>
+        
+        {/* Input Section */}
+        <div className="space-y-4">
+          <Textarea
+            value={inputUrls}
+            onChange={(e) => setInputUrls(e.target.value)}
+            placeholder="Paste GitHub PR URLs here (one per line)&#10;Example:&#10;https://github.com/owner/repo/pull/123&#10;https://github.com/owner/repo/pull/456"
+            className="h-32 resize-none"
+          />
+          <button
+            onClick={addCards}
+            disabled={!inputUrls.trim()}
+            className="bg-accent text-accent-foreground px-6 py-2 rounded-lg hover:bg-accent/90 disabled:bg-muted disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <Plus size={20} />
+            Add PRs to Tracker
+          </button>
+        </div>
+      </Card>
 
         {/* Delete Confirmation Modal */}
         {showDeleteModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={cancelDelete}>
-            <div className="bg-white p-6 max-w-md w-full" style={{ borderRadius: '12px' }} onClick={(e) => e.stopPropagation()}>
+            <Card variant="elevated-xl" padding="lg" className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg text-foreground" style={{ fontFamily: '"Quicksand", sans-serif', fontWeight: 700 }}>Delete Card</h3>
+                <h3 className="text-lg text-foreground font-bold">Delete Card</h3>
                 <button 
                   onClick={cancelDelete}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -1117,11 +1078,11 @@ const PRDeploymentTracker = () => {
                   Are you sure you want to delete this card?
                 </p>
                 {cardToDelete && (
-                  <div className="bg-gray-50 p-3 rounded border">
+                  <div className="bg-muted p-3 rounded border">
                     <div className="font-medium text-foreground">
                       {cardToDelete.customTitle || cardToDelete.title}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 truncate">
+                    <div className="text-xs text-muted-foreground mt-1 truncate">
                       {cardToDelete.url}
                     </div>
                     {cardToDelete.notes && cardToDelete.notes.length > 0 && (
@@ -1144,35 +1105,33 @@ const PRDeploymentTracker = () => {
                 <button
                   onClick={cancelDelete}
                   className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => deleteCard(cardToDelete.id)}
-                  className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-destructive/90 transition-colors flex items-center gap-2"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
+                  className="bg-destructive text-destructive-foreground px-6 py-2 rounded-lg hover:bg-destructive/90 transition-colors flex items-center gap-2"
                 >
                   <Trash2 size={16} />
                   Delete Card
                 </button>
               </div>
-            </div>
+            </Card>
           </div>
         )}
 
         {/* Conflict Resolution Modal */}
         {showConflictModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={cancelConflictResolution}>
-            <div className="bg-white w-full max-w-4xl flex flex-col" style={{ borderRadius: '12px', maxHeight: '90vh' }} onClick={(e) => e.stopPropagation()}>
+            <div className="bg-card w-full max-w-4xl flex flex-col" style={{ borderRadius: '12px', maxHeight: '90vh' }} onClick={(e) => e.stopPropagation()}>
               {/* Fixed Header */}
-              <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-xl text-gray-900" style={{ fontFamily: '"Quicksand", sans-serif', fontWeight: 700 }}>
+              <div className="flex items-center justify-between p-6 border-b border-border">
+                <h2 className="text-xl text-foreground font-bold">
                   Resolve Status Conflicts ({conflictingPRs.length} PR{conflictingPRs.length > 1 ? 's' : ''})
                 </h2>
                 <button 
                   onClick={cancelConflictResolution}
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={24} />
                 </button>
@@ -1188,10 +1147,10 @@ const PRDeploymentTracker = () => {
                     const isSkipped = currentResolution === 'SKIP';
                     
                     return (
-                      <div key={conflict.url} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                      <div key={conflict.url} className="border border-border rounded-lg p-4 bg-muted">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex-1">
-                            <div className="font-semibold text-gray-900 text-lg mb-1">
+                            <div className="font-semibold text-foreground text-lg mb-1">
                               {displayTitle}
                             </div>
                             <div className="text-sm text-muted-foreground mb-2 break-all">
@@ -1199,11 +1158,11 @@ const PRDeploymentTracker = () => {
                             </div>
                           </div>
                           {conflict.existingCard ? (
-                            <div className="text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full ml-4 whitespace-nowrap">
+                            <div className="text-xs font-medium text-accent bg-accent/10 px-3 py-1 rounded-full ml-4 whitespace-nowrap border border-accent/30">
                               In: {columns.find(col => col.id === conflict.existingCard.column)?.title}
                             </div>
                           ) : (
-                            <div className="text-xs font-medium text-orange-600 bg-orange-50 px-3 py-1 rounded-full ml-4 whitespace-nowrap">
+                            <div className="text-xs font-medium text-orange-500 dark:text-orange-400 bg-orange-500/10 dark:bg-orange-400/10 px-3 py-1 rounded-full ml-4 whitespace-nowrap border border-orange-500/30 dark:border-orange-400/30">
                               NEW
                             </div>
                           )}
@@ -1221,7 +1180,7 @@ const PRDeploymentTracker = () => {
 
                         {!isSkipped && (
                           <div className="mb-3">
-                            <div className="text-sm font-semibold text-gray-700 mb-2">Choose status:</div>
+                            <div className="text-sm font-semibold text-foreground mb-2">Choose status:</div>
                             <div className="flex flex-wrap gap-2">
                               {conflict.columns.map(columnId => {
                                 const column = columns.find(col => col.id === columnId);
@@ -1234,9 +1193,8 @@ const PRDeploymentTracker = () => {
                                     className={`px-4 py-2 rounded-lg border-2 transition-all ${
                                       isSelected
                                         ? 'border-accent bg-accent text-accent-foreground font-semibold'
-                                        : 'border-gray-300 bg-white text-gray-700 hover:border-accent'
+                                        : 'border-border bg-card text-foreground hover:border-accent'
                                     }`}
-                                    style={{ fontFamily: '"Roboto", sans-serif' }}
                                   >
                                     {column?.title || columnId}
                                   </button>
@@ -1248,14 +1206,13 @@ const PRDeploymentTracker = () => {
 
                         <button
                           onClick={() => isSkipped ? setConflictResolution(conflict.url, conflict.existingCard?.column || null) : skipConflictPR(conflict.url)}
-                          className="text-muted-foreground hover:text-foreground px-4 py-2 rounded border border-gray-300 hover:border-border transition-colors text-sm"
-                          style={{ fontFamily: '"Roboto", sans-serif' }}
+                          className="text-muted-foreground hover:text-foreground px-4 py-2 rounded border border-border hover:border-border transition-colors text-sm"
                         >
                           {isSkipped ? 'Undo Skip' : 'Skip This PR'}
                         </button>
 
                         {isSkipped && (
-                          <div className="mt-2 text-sm text-gray-500 italic">
+                          <div className="mt-2 text-sm text-muted-foreground italic">
                             This PR will be skipped (no changes applied)
                           </div>
                         )}
@@ -1266,14 +1223,13 @@ const PRDeploymentTracker = () => {
               </div>
 
               {/* Fixed Footer */}
-              <div className="flex justify-between items-center gap-3 p-6 border-t bg-gray-50">
+              <div className="flex justify-between items-center gap-3 p-6 border-t border-border bg-muted">
                 <button
                   onClick={() => {
                     const conflictDuplicates = conflictingPRs.flatMap(c => c.importedVersions);
                     copyDuplicateUrls(conflictDuplicates, null);
                   }}
-                  className="text-muted-foreground hover:text-foreground px-4 py-2 rounded border border-gray-300 hover:border-border transition-colors text-sm"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
+                  className="text-muted-foreground hover:text-foreground px-4 py-2 rounded border border-border hover:border-accent transition-colors text-sm"
                 >
                   Copy Details
                 </button>
@@ -1281,7 +1237,6 @@ const PRDeploymentTracker = () => {
                   <button
                     onClick={cancelConflictResolution}
                     className="px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                    style={{ fontFamily: '"Roboto", sans-serif' }}
                   >
                     Cancel
                   </button>
@@ -1291,8 +1246,7 @@ const PRDeploymentTracker = () => {
                       const resolution = conflictResolutions[c.url];
                       return resolution !== 'SKIP' && (!resolution || (!c.existingCard && !resolution));
                     })}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                    style={{ fontFamily: '"Roboto", sans-serif' }}
+                    className="bg-accent text-accent-foreground px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed"
                   >
                     Confirm Selections ({Object.values(conflictResolutions).filter(r => r && r !== 'SKIP').length}/{conflictingPRs.length})
                   </button>
@@ -1306,8 +1260,7 @@ const PRDeploymentTracker = () => {
         <div className="mb-6 flex justify-end gap-3">
           <button
             onClick={() => setShowReleaseModal(true)}
-            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-muted-foreground/90 transition-colors flex items-center gap-2 text-sm"
-            style={{ fontFamily: '"Roboto", sans-serif' }}
+            className="bg-muted-foreground text-foreground px-4 py-2 rounded-lg hover:bg-muted-foreground/90 transition-colors flex items-center gap-2 text-sm"
           >
             <Copy size={16} />
             Copy Release List
@@ -1315,7 +1268,6 @@ const PRDeploymentTracker = () => {
           <button
             onClick={() => setShowExportModal(true)}
             className="bg-accent text-accent-foreground px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2 shadow-md"
-            style={{ fontFamily: '"Roboto", sans-serif' }}
           >
             <Copy size={20} />
             Copy Full Status Report
@@ -1325,12 +1277,12 @@ const PRDeploymentTracker = () => {
         {/* Release List Modal */}
         {showReleaseModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setShowReleaseModal(false)}>
-            <div className="bg-white p-6 max-w-md w-full" style={{ borderRadius: '12px' }} onClick={(e) => e.stopPropagation()}>
+            <Card variant="elevated-xl" padding="lg" className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg text-foreground" style={{ fontFamily: '"Quicksand", sans-serif', fontWeight: 700 }}>Copy Release List</h3>
+                <h3 className="text-lg text-foreground font-bold">Copy Release List</h3>
                 <button 
                   onClick={() => setShowReleaseModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -1343,7 +1295,7 @@ const PRDeploymentTracker = () => {
                 <p className="text-sm text-muted-foreground mb-2">
                   Perfect for stakeholder updates and release documentation.
                 </p>
-                <p className="text-sm text-gray-500 text-xs">
+                <p className="text-sm text-muted-foreground text-xs">
                   Format: Card Title - Asana URL (or just title if no Asana link found)
                 </p>
               </div>
@@ -1352,32 +1304,30 @@ const PRDeploymentTracker = () => {
                 <button
                   onClick={() => setShowReleaseModal(false)}
                   className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={copyReleaseList}
-                  className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-muted-foreground/90 transition-colors flex items-center gap-2"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
+                  className="bg-muted-foreground text-foreground px-6 py-2 rounded-lg hover:bg-muted-foreground/90 transition-colors flex items-center gap-2"
                 >
                   <Copy size={16} />
                   Copy List
                 </button>
               </div>
-            </div>
+            </Card>
           </div>
         )}
 
         {/* Export Modal */}
         {showExportModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setShowExportModal(false)}>
-            <div className="bg-white p-6 max-w-md w-full" style={{ borderRadius: '12px' }} onClick={(e) => e.stopPropagation()}>
+            <Card variant="elevated-xl" padding="lg" className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg text-foreground" style={{ fontFamily: '"Quicksand", sans-serif', fontWeight: 700 }}>Export Status Report</h3>
+                <h3 className="text-lg text-foreground font-bold">Export Status Report</h3>
                 <button 
                   onClick={() => setShowExportModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -1390,7 +1340,7 @@ const PRDeploymentTracker = () => {
                 <p className="text-sm text-muted-foreground mb-2">
                   Perfect for sharing deployment progress with your team, daily standups, or sprint reviews.
                 </p>
-                <p className="text-sm text-gray-500 text-xs">
+                <p className="text-sm text-muted-foreground text-xs">
                   Format: Custom Title - GitHub URL (Notes: context) with timestamps
                 </p>
               </div>
@@ -1399,20 +1349,18 @@ const PRDeploymentTracker = () => {
                 <button
                   onClick={() => setShowExportModal(false)}
                   className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={copyFullStatusReport}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-                  style={{ fontFamily: '"Roboto", sans-serif' }}
+                  className="bg-accent text-accent-foreground px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2"
                 >
                   <Copy size={16} />
                   Copy Report
                 </button>
               </div>
-            </div>
+            </Card>
           </div>
         )}
 
@@ -1447,7 +1395,7 @@ const PRDeploymentTracker = () => {
                   {toast.urls.length > 0 && (
                     <button
                       onClick={() => copyDuplicateUrls(toast.urls, toast.id)}
-                      className="bg-white text-orange-600 px-3 py-1 rounded text-sm font-medium hover:bg-orange-50 transition-colors"
+                      className="bg-card text-orange-600 dark:text-orange-400 px-3 py-1 rounded text-sm font-medium hover:bg-muted transition-colors"
                     >
                       Copy Details
                     </button>
@@ -1455,7 +1403,7 @@ const PRDeploymentTracker = () => {
                   {toast.conflictCount > 0 && conflictingPRs.length > 0 && (
                     <button
                       onClick={() => showConflictModalFromToast(toast.id)}
-                      className="bg-white text-orange-600 px-3 py-1 rounded text-sm font-medium hover:bg-orange-50 transition-colors"
+                      className="bg-card text-orange-600 dark:text-orange-400 px-3 py-1 rounded text-sm font-medium hover:bg-muted transition-colors"
                     >
                       Review Conflicts
                     </button>
@@ -1477,8 +1425,8 @@ const PRDeploymentTracker = () => {
           {columns.map(column => {
             const columnCards = getCardsInColumn(column.id);
             return (
-              <div key={column.id} className="bg-white rounded-lg border shadow-sm">
-                <div className={`p-4 border-b ${column.color} rounded-t-lg`}>
+              <div key={column.id} className="bg-card rounded-lg border border-border shadow-sm">
+                <div className={`p-4 border-b border-border ${column.color} rounded-t-lg`}>
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-foreground">{column.title}</h3>
@@ -1487,7 +1435,7 @@ const PRDeploymentTracker = () => {
                     {columnCards.length > 0 && (
                       <button
                         onClick={() => copyColumnUrls(column.id)}
-                        className="p-2 hover:bg-white hover:bg-opacity-50 rounded transition-colors duration-200"
+                        className="p-2 hover:bg-muted rounded transition-colors duration-200"
                         title="Copy all URLs in this column"
                       >
                         {copiedColumn === column.id ? (
@@ -1512,7 +1460,7 @@ const PRDeploymentTracker = () => {
                       {dragOverPosition && 
                        dragOverPosition.columnId === column.id && 
                        dragOverPosition.index === index && (
-                        <div className="h-20 bg-muted border-2 border-dashed border-gray-300 rounded-lg mb-3 flex items-center justify-center">
+                        <div className="h-20 bg-muted border-2 border-dashed border-border rounded-lg mb-3 flex items-center justify-center">
                           <span className="text-muted-foreground text-sm">Drop here</span>
                         </div>
                       )}
@@ -1529,14 +1477,14 @@ const PRDeploymentTracker = () => {
                           }
                           handleDragStart(e, card);
                         }}
-                        className="bg-white border rounded-lg p-3 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 ease-out group"
-                        style={{
+                        className={`bg-card border rounded-lg p-3 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 ease-out group ${
+                          selectedCards.includes(card.id) 
+                            ? 'border-accent border-2 shadow-[0_0_0_2px_hsl(var(--accent)/0.1)]' 
+                            : 'border-border'
+                        }`}
+                          style={{
                           opacity: draggedCard?.id === card.id || (draggedCard?.isMultiSelect && selectedCards.includes(card.id)) ? 0.3 : 1,
                           transform: draggedCard?.id === card.id || (draggedCard?.isMultiSelect && selectedCards.includes(card.id)) ? 'scale(0.95)' : undefined,
-                          backgroundColor: draggedCard?.id === card.id || (draggedCard?.isMultiSelect && selectedCards.includes(card.id)) ? '#f3f4f6' : undefined,
-                          borderColor: selectedCards.includes(card.id) ? '#3b82f6' : '#e5e7eb',
-                          borderWidth: selectedCards.includes(card.id) ? '2px' : '1px',
-                          boxShadow: selectedCards.includes(card.id) ? '0 0 0 2px rgba(59, 130, 246, 0.1)' : undefined
                         }}
                       >
                         <div className="flex items-center justify-between">
@@ -1598,7 +1546,7 @@ const PRDeploymentTracker = () => {
                                 e.preventDefault();
                                 openPR(card.url);
                               }}
-                              className="opacity-0 group-hover:opacity-100 text-blue-600 hover:text-blue-800 transition-opacity cursor-pointer"
+                              className="opacity-0 group-hover:opacity-100 text-accent hover:text-accent/80 transition-opacity cursor-pointer"
                             >
                               <ExternalLink size={16} />
                             </button>
@@ -1612,14 +1560,14 @@ const PRDeploymentTracker = () => {
                                 e.preventDefault();
                                 confirmDelete(card);
                               }}
-                              className="opacity-0 group-hover:opacity-100 text-red-600 hover:text-destructive/80 transition-opacity cursor-pointer"
+                              className="opacity-0 group-hover:opacity-100 text-destructive hover:text-destructive/80 transition-opacity cursor-pointer"
                               title="Delete card"
                             >
                               <Trash2 size={16} />
                             </button>
                           </div>
                         </div>
-                        <div className="text-xs text-gray-500 mt-1 truncate">
+                        <div className="text-xs text-muted-foreground mt-1 truncate">
                           {card.url}
                         </div>
                         
@@ -1635,7 +1583,7 @@ const PRDeploymentTracker = () => {
                                   {note}
                                   <button
                                     onClick={() => removeNote(card.id, noteIndex)}
-                                    className="hover:text-red-600 transition-colors"
+                                    className="hover:text-destructive transition-colors"
                                   >
                                     <X size={12} />
                                   </button>
@@ -1658,7 +1606,7 @@ const PRDeploymentTracker = () => {
                                 }
                               }}
                               placeholder="Add note (up to 150 characters)..."
-                              className="w-full text-xs px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-transparent"
+                              className="w-full text-xs px-2 py-1 border border-border rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent bg-background text-foreground"
                               autoFocus
                               maxLength={150}
                             />
@@ -1672,7 +1620,7 @@ const PRDeploymentTracker = () => {
                   {dragOverPosition && 
                    dragOverPosition.columnId === column.id && 
                    dragOverPosition.index === columnCards.length && (
-                    <div className="h-20 bg-muted border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                    <div className="h-20 bg-muted border-2 border-dashed border-border rounded-lg flex items-center justify-center">
                       <span className="text-muted-foreground text-sm">Drop here</span>
                     </div>
                   )}
@@ -1687,8 +1635,7 @@ const PRDeploymentTracker = () => {
             );
           })}
         </div>
-      </div>
-    </div>
+    </PageContainer>
   );
 };
 

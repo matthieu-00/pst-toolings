@@ -6,7 +6,7 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename="/claude-react-pages">
+    <BrowserRouter basename="/pst-toolings">
       <App />
     </BrowserRouter>
   </React.StrictMode>,

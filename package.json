@@ -1,9 +1,9 @@
 {
-  "name": "claude-react-pages",
+  "name": "pst-toolings",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "homepage": "https://matthieu-00.github.io/claude-react-pages",
+  "homepage": "https://matthieu-00.github.io/pst-toolings",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

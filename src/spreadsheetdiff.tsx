@@ -1,7 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { Upload, Download, HelpCircle, AlertCircle, X } from 'lucide-react';
+import { Upload, Download, HelpCircle, AlertCircle, X, FileSpreadsheet } from 'lucide-react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageHeader } from '@/components/ui/page-header';
+import { Card } from '@/components/ui/card';
+import { Input, Textarea } from '@/components/ui/input';
+import { HelpTooltip } from '@/components/ui/help-tooltip';
 
 export default function SpreadsheetComparator() {
   const [data1, setData1] = useState(null);
@@ -241,54 +246,104 @@ export default function SpreadsheetComparator() {
 
   const totalDiffs = columnComparisons.reduce((sum, col) => sum + col.diffCount, 0);
 
+  const helpContent = (
+    <div className="space-y-6 text-sm">
+      {/* Overview */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Overview
+        </h3>
+        <p className="text-foreground mb-2">
+          Compare two spreadsheets to find differences between them. Upload CSV or Excel files and analyze column-by-column variations with visual indicators.
+        </p>
+      </div>
+
+      {/* Workflow */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Workflow
+        </h3>
+        <p className="text-foreground mb-2">
+          Upload or paste two spreadsheets to begin comparison.
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Upload CSV or Excel files for each spreadsheet</p>
+          <p>• Tool auto-detects and skips header rows</p>
+          <p>• Columns are automatically ranked by differences</p>
+          <p>• Click any column to see detailed row-by-row comparison</p>
+          <p>• Toggle to hide identical columns for focused analysis</p>
+          <p>• Export all differences or select specific columns</p>
+        </div>
+      </div>
+
+      {/* Visual Indicators */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Visual Indicators
+        </h3>
+        <p className="text-foreground mb-2">
+          Column color gradient indicates difference levels:
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• <span className="text-green-600 dark:text-green-400">Green</span> = Identical values</p>
+          <p>• <span className="text-yellow-600 dark:text-yellow-400">Yellow</span> = Minor differences</p>
+          <p>• <span className="text-orange-600 dark:text-orange-400">Orange</span> = Moderate differences</p>
+          <p>• <span className="text-red-600 dark:text-red-400">Red</span> = Major differences</p>
+        </div>
+        <p className="text-foreground mb-2 mt-3">
+          Column letters (A, B, C) are shown for easy Excel-style reference.
+        </p>
+      </div>
+
+      {/* Features */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Features
+        </h3>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Column ranking by difference percentage</p>
+          <p>• Row-by-row comparison view for selected columns</p>
+          <p>• Hide identical columns toggle</p>
+          <p>• Export all differences or selected columns only</p>
+          <p>• Excel-style column letter references</p>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-muted p-4">
-      <div className="max-w-[95vw] mx-auto">
-        <div className="bg-white rounded-lg shadow-lg">
-          <div className="flex items-center justify-between p-4 border-b">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Spreadsheet Differential Check</h1>
-              <p className="text-xs text-gray-500 mt-1">Compare spreadsheets to find the differences between them</p>
-            </div>
-            <button 
-              className="relative"
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-            >
-              <HelpCircle className="w-5 h-5 text-gray-500" />
-              {showTooltip && (
-                <div className="absolute right-0 top-8 w-80 bg-foreground text-foreground text-xs p-3 rounded-lg shadow-xl z-10">
-                  <p className="font-semibold mb-2">How to use:</p>
-                  <ul className="space-y-1">
-                    <li>• Upload or paste two spreadsheets (CSV/Excel)</li>
-                    <li>• Tool auto-detects and skips header rows</li>
-                    <li>• Columns ranked by differences with color gradient</li>
-                    <li>• Green = identical, yellow to red = increasing differences</li>
-                    <li>• Click any column to see row-by-row comparison</li>
-                    <li>• Toggle to hide identical columns</li>
-                    <li>• Export all differences or select specific columns</li>
-                    <li>• Column letters (A, B, C) shown for easy reference</li>
-                  </ul>
-                </div>
-              )}
-            </button>
+    <PageContainer variant="muted" maxWidth="95vw">
+      <Card variant="elevated" padding="none">
+        <div className="p-4 border-b">
+          <div className="flex items-start justify-between gap-4">
+            <PageHeader
+              icon={FileSpreadsheet}
+              title="Spreadsheet Differential Check"
+              description="Compare spreadsheets to find the differences between them"
+            />
+            <HelpTooltip
+              content={helpContent}
+              variant="modal"
+              icon="info"
+            />
           </div>
+        </div>
 
           <div className="grid md:grid-cols-2 gap-0 border-b">
             <div className="p-4 md:border-r">
               <h3 className="font-semibold mb-2 text-sm flex items-center gap-2">
                 <div className="w-3 h-3 bg-accent rounded"></div> Spreadsheet 1
               </h3>
-              <input 
+              <Input 
                 type="file" 
                 accept=".csv,.xlsx,.xls"
                 onChange={(e) => e.target.files[0] && parseFile(e.target.files[0], setData1, setHeaders1, setColLetters1)}
                 className="mb-2 text-xs w-full"
               />
-              <textarea 
+              <Textarea 
                 placeholder="Or paste CSV/TSV data..."
-                className="w-full p-2 border rounded text-xs font-mono"
-                rows="3"
+                className="w-full text-xs font-mono"
+                rows={3}
                 onChange={(e) => e.target.value && parsePasted(e.target.value, setData1, setHeaders1, setColLetters1)}
               />
               {data1 && <p className="text-xs text-green-600 mt-1">✓ {data1.length} rows, {headers1.length} columns</p>}
@@ -298,19 +353,19 @@ export default function SpreadsheetComparator() {
               <h3 className="font-semibold mb-2 text-sm flex items-center gap-2">
                 <div className="w-3 h-3 bg-purple-500 rounded"></div> Spreadsheet 2
               </h3>
-              <input 
+              <Input 
                 type="file" 
                 accept=".csv,.xlsx,.xls"
                 onChange={(e) => e.target.files[0] && parseFile(e.target.files[0], setData2, setHeaders2, setColLetters2)}
                 className="mb-2 text-xs w-full"
               />
-              <textarea 
+              <Textarea 
                 placeholder="Or paste CSV/TSV data..."
-                className="w-full p-2 border rounded text-xs font-mono"
-                rows="3"
+                className="w-full text-xs font-mono"
+                rows={3}
                 onChange={(e) => e.target.value && parsePasted(e.target.value, setData2, setHeaders2, setColLetters2)}
               />
-              {data2 && <p className="text-xs text-green-600 mt-1">✓ {data2.length} rows, {headers2.length} columns</p>}
+              {data2 && <p className="text-xs text-accent mt-1">✓ {data2.length} rows, {headers2.length} columns</p>}
             </div>
           </div>
 
@@ -330,7 +385,7 @@ export default function SpreadsheetComparator() {
                     onClick={() => setHideIdentical(!hideIdentical)}
                   >
                     <div 
-                      className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      className={`absolute top-0.5 left-0.5 w-5 h-5 bg-card rounded-full transition-transform ${
                         hideIdentical ? 'translate-x-5' : 'translate-x-0'
                       }`}
                     />
@@ -364,7 +419,7 @@ export default function SpreadsheetComparator() {
                       <div className="flex justify-between items-start mb-1">
                         <div className="flex-1">
                           <div className="font-semibold text-sm truncate">{col.column}</div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">
+                          <div className="text-[10px] text-muted-foreground mt-0.5">
                             {col.letter1 && col.letter2 && col.letter1 === col.letter2 ? (
                               <span>Col {col.letter1}</span>
                             ) : (
@@ -376,8 +431,8 @@ export default function SpreadsheetComparator() {
                             )}
                           </div>
                         </div>
-                        {col.onlyIn1 && <span className="text-[10px] bg-red-100 text-red-700 px-1 rounded ml-2">Only S1</span>}
-                        {col.onlyIn2 && <span className="text-[10px] bg-green-100 text-green-700 px-1 rounded ml-2">Only S2</span>}
+                        {col.onlyIn1 && <span className="text-[10px] bg-destructive/10 text-destructive px-1 rounded ml-2">Only S1</span>}
+                        {col.onlyIn2 && <span className="text-[10px] bg-accent/20 text-accent px-1 rounded ml-2">Only S2</span>}
                       </div>
                       <div className="flex items-center gap-2">
                         {col.diffCount > 0 ? (
@@ -433,7 +488,7 @@ export default function SpreadsheetComparator() {
                                 diff.status === 'changed' ? 'bg-yellow-50' : ''
                               }`}
                             >
-                              <td className="p-2 font-mono text-gray-500">{diff.rowIndex + 1}</td>
+                              <td className="p-2 font-mono text-muted-foreground">{diff.rowIndex + 1}</td>
                               <td className="p-2 font-mono">{diff.value1 || <span className="text-muted-foreground">—</span>}</td>
                               <td className="p-2 font-mono">{diff.value2 || <span className="text-muted-foreground">—</span>}</td>
                               <td className="p-2">
@@ -474,7 +529,7 @@ export default function SpreadsheetComparator() {
 
           {showExportModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+              <Card variant="elevated-xl" padding="none" className="max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
                 <div className="p-4 border-b flex items-center justify-between">
                   <h2 className="text-lg font-bold">Export Differences</h2>
                   <button 
@@ -482,7 +537,7 @@ export default function SpreadsheetComparator() {
                       setShowExportModal(false);
                       setSelectedExportColumns([]);
                     }}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -498,7 +553,7 @@ export default function SpreadsheetComparator() {
                     </button>
                     <button
                       onClick={() => setSelectedExportColumns([])}
-                      className="px-3 py-1 bg-muted text-gray-700 rounded text-xs hover:bg-muted"
+                      className="px-3 py-1 bg-muted text-foreground rounded text-xs hover:bg-muted"
                     >
                       Clear Selection
                     </button>
@@ -525,7 +580,7 @@ export default function SpreadsheetComparator() {
                         />
                         <div className="flex-1">
                           <div className="font-medium text-sm">{col.column}</div>
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-muted-foreground">
                             {col.letter1 && col.letter2 && col.letter1 === col.letter2 ? (
                               <span>Col {col.letter1}</span>
                             ) : (
@@ -555,7 +610,7 @@ export default function SpreadsheetComparator() {
                       setShowExportModal(false);
                       setSelectedExportColumns([]);
                     }}
-                    className="px-4 py-2 text-gray-700 hover:bg-muted rounded text-sm"
+                    className="px-4 py-2 text-foreground hover:bg-muted rounded text-sm"
                   >
                     Cancel
                   </button>
@@ -569,11 +624,10 @@ export default function SpreadsheetComparator() {
                       : `Export ${selectedExportColumns.length} Column${selectedExportColumns.length === 1 ? '' : 's'}`}
                   </button>
                 </div>
-              </div>
+              </Card>
             </div>
           )}
-        </div>
-      </div>
-    </div>
+        </Card>
+    </PageContainer>
   );
 }

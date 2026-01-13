@@ -27,6 +27,21 @@
     --input: 220 10% 86%; /* Light Grey #D7D9DE */
     --ring: 205 80% 81%; /* Ice Blue #A9D5F5 */
     --radius: 0.5rem;
+    
+    /* Semantic Type Colors - JSON Data Types */
+    --type-string: 210 100% 75%; /* Blue #7eb3ff */
+    --type-number: 51 100% 50%; /* Gold #ffd700 */
+    --type-boolean: 120 73% 75%; /* Green #90ee90 */
+    --type-array: 15 100% 75%; /* Orange #ff9f7f */
+    --type-object: 300 47% 75%; /* Purple #dda0dd */
+    --type-null: 210 10% 50%; /* Gray #6F7B87 */
+    
+    /* Semantic Status Colors - Comparison States */
+    --status-match: 120 73% 75%; /* Green #90ee90 - matches type-boolean */
+    --status-differ: 0 100% 71%; /* Red #ff6b6b */
+    --status-warning: 15 100% 75%; /* Orange #ff9f7f - matches type-array */
+    --status-only-a: 210 100% 75%; /* Blue #7eb3ff - matches type-string */
+    --status-only-b: 15 100% 75%; /* Orange #ff9f7f - matches type-array */
   }
 
   .dark {
@@ -50,6 +65,21 @@
     --border: 220 10% 86%; /* Light Grey #D7D9DE */
     --input: 220 13% 30%; /* Darker than Charcoal */
     --ring: 205 80% 81%; /* Ice Blue #A9D5F5 */
+    
+    /* Semantic Type Colors - JSON Data Types */
+    --type-string: 210 100% 80%; /* Blue - slightly lighter for dark mode */
+    --type-number: 51 100% 60%; /* Gold - brighter for dark mode */
+    --type-boolean: 120 73% 70%; /* Green - slightly darker for contrast */
+    --type-array: 15 100% 70%; /* Orange - slightly darker for contrast */
+    --type-object: 300 47% 70%; /* Purple - slightly darker for contrast */
+    --type-null: 210 10% 60%; /* Gray - lighter for dark mode */
+    
+    /* Semantic Status Colors - Comparison States */
+    --status-match: 120 73% 70%; /* Green - matches type-boolean */
+    --status-differ: 0 100% 65%; /* Red - darker for dark mode */
+    --status-warning: 15 100% 70%; /* Orange - matches type-array */
+    --status-only-a: 210 100% 80%; /* Blue - matches type-string */
+    --status-only-b: 15 100% 70%; /* Orange - matches type-array */
   }
 }
 
@@ -61,4 +91,11 @@
     @apply bg-background text-foreground;
     font-family: 'Source Code Pro', monospace;
   }
+}
+
+/* Font Variables */
+:root {
+  --font-mono: 'Source Code Pro', monospace;
+  --font-display: 'Nixie One', cursive;
+  --font-sans: system-ui, -apple-system, sans-serif;
 }

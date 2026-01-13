@@ -41,12 +41,34 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Semantic Type Colors - JSON Data Types
+        type: {
+          string: "hsl(var(--type-string))",
+          number: "hsl(var(--type-number))",
+          boolean: "hsl(var(--type-boolean))",
+          array: "hsl(var(--type-array))",
+          object: "hsl(var(--type-object))",
+          null: "hsl(var(--type-null))",
+        },
+        // Semantic Status Colors - Comparison States
+        status: {
+          match: "hsl(var(--status-match))",
+          differ: "hsl(var(--status-differ))",
+          warning: "hsl(var(--status-warning))",
+          "only-a": "hsl(var(--status-only-a))",
+          "only-b": "hsl(var(--status-only-b))",
+        },
         // Custom palette colors
         charcoal: "#333843",
         "medium-grey": "#9BA0AA",
         "light-grey": "#D7D9DE",
         "soft-white": "#F5F6F8",
         "ice-blue": "#A9D5F5",
+      },
+      fontFamily: {
+        mono: ["var(--font-mono)", "monospace"],
+        display: ["var(--font-display)", "cursive"],
+        sans: ["var(--font-sans)", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

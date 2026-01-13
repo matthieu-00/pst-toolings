@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Play, AlertCircle, Copy, Check, Upload, Terminal, Maximize2, Minimize2, RotateCcw, X } from 'lucide-react';
+import { Play, AlertCircle, Copy, Check, Upload, Terminal, Maximize2, Minimize2, RotateCcw, X, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { PageHeader } from '@/components/ui/page-header';
+import { Card } from '@/components/ui/card';
+import { HelpTooltip } from '@/components/ui/help-tooltip';
 
 export default function LiveCodeRenderer() {
   const defaultCode = `export default function Demo() {
@@ -51,8 +54,8 @@ export default function LiveCodeRenderer() {
   <p>This HTML will render above your React component.</p>
 </div>`,
     css: `.banner {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--primary)) 100%);
+  color: hsl(var(--primary-foreground));
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -438,11 +441,116 @@ window.customAlert = function() {
 
   const RenderedComponent = renderedComponent;
 
+  const helpContent = (
+    <div className="space-y-6 text-sm">
+      {/* Overview */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Overview
+        </h3>
+        <p className="text-foreground mb-2">
+          Render TSX, HTML/CSS/JS, or combined code live in your browser. Test React components, static HTML, or full web pages with instant preview and debugging capabilities.
+        </p>
+      </div>
+
+      {/* Render Modes */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Render Modes
+        </h3>
+        <div className="space-y-3">
+          <div>
+            <p className="text-foreground mb-1 font-medium">TSX Mode:</p>
+            <div className="text-muted-foreground text-xs space-y-1">
+              <p>• Write React components with hooks (useState, useEffect, etc.)</p>
+              <p>• Full React functionality with JSX syntax</p>
+              <p>• Babel and Lucide React icons loaded automatically</p>
+            </div>
+          </div>
+          <div>
+            <p className="text-foreground mb-1 font-medium">HTML Mode:</p>
+            <div className="text-muted-foreground text-xs space-y-1">
+              <p>• Render static HTML content</p>
+              <p>• Perfect for testing HTML structure and layout</p>
+            </div>
+          </div>
+          <div>
+            <p className="text-foreground mb-1 font-medium">Combined Mode:</p>
+            <div className="text-muted-foreground text-xs space-y-1">
+              <p>• Combine HTML, CSS, JavaScript, and TSX together</p>
+              <p>• HTML renders above the React component</p>
+              <p>• CSS styles apply globally</p>
+              <p>• JavaScript executes before component render</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Workflow */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Workflow
+        </h3>
+        <p className="text-foreground mb-2">
+          Write your code and render it instantly.
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Select your render mode (TSX, HTML, or Combined)</p>
+          <p>• Write or paste your code in the editor</p>
+          <p>• Click "Render" to see live preview</p>
+          <p>• Check the Logs tab for console output and errors</p>
+          <p>• Use fullscreen mode for better viewing</p>
+        </div>
+      </div>
+
+      {/* Features */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Features
+        </h3>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• Console logs captured and displayed in Logs tab</p>
+          <p>• Fullscreen mode for immersive preview</p>
+          <p>• Clear button to reset code and preview</p>
+          <p>• Copy button to copy rendered code</p>
+          <p>• Error messages displayed clearly when rendering fails</p>
+          <p>• Tab-based editor for Combined mode (HTML, CSS, JS, TSX)</p>
+        </div>
+      </div>
+
+      {/* Visual Indicators */}
+      <div>
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Visual Indicators
+        </h3>
+        <p className="text-foreground mb-2">
+          Log types in the Logs tab:
+        </p>
+        <div className="text-muted-foreground text-xs space-y-1">
+          <p>• <span className="text-red-600 dark:text-red-400">Error</span> - Red: Runtime errors and exceptions</p>
+          <p>• <span className="text-yellow-600 dark:text-yellow-400">Warning</span> - Yellow: Warnings and deprecations</p>
+          <p>• <span className="text-green-600 dark:text-green-400">Success</span> - Green: Successful operations</p>
+          <p>• Info - Default: General console.log messages</p>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="h-screen flex flex-col bg-background">
       <div className="border-b px-6 py-4 bg-card">
-        <h1 className="text-2xl font-bold">Live Code Renderer</h1>
-        <p className="text-sm text-muted-foreground mt-1">Render TSX, HTML/CSS/JS, or combined code live in your browser</p>
+        <div className="flex items-start justify-between gap-4">
+          <PageHeader
+            icon={Code}
+            title="Live Code Renderer"
+            description="Render TSX, HTML/CSS/JS, or combined code live in your browser"
+          />
+          <HelpTooltip
+            content={helpContent}
+            variant="modal"
+            icon="info"
+          />
+        </div>
         
         <div className="flex gap-2 mt-3">
           <span className="text-xs text-muted-foreground self-center mr-2">Render Mode:</span>
@@ -581,7 +689,7 @@ window.customAlert = function() {
           </div>
           <div className="flex-1 overflow-auto">
             {activeTab === 'logs' ? (
-              <div className="p-4 font-mono text-xs space-y-2" style={{ fontFamily: "'Nixie One', cursive" }}>
+              <div className="p-4 font-display text-xs space-y-2">
                 {logs.length === 0 ? (
                   <div className="text-muted-foreground text-center py-12">No logs yet. Click "Render" to see output.</div>
                 ) : (
@@ -641,7 +749,7 @@ window.customAlert = function() {
                 title="HTML Preview"
               />
             ) : RenderedComponent ? (
-              <div className="p-6" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+              <div className="p-6 font-sans">
                 <RenderedComponent />
               </div>
             ) : (
@@ -677,7 +785,7 @@ window.customAlert = function() {
 
       {showClearModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-card border rounded-lg p-6 max-w-md w-full shadow-xl">
+          <Card variant="elevated" padding="lg" className="max-w-md w-full">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Clear Renderer?</h3>
               <button
@@ -699,7 +807,7 @@ window.customAlert = function() {
                 Clear & Reset
               </Button>
             </div>
-          </div>
+          </Card>
         </div>
       )}
 
