@@ -57,9 +57,10 @@ PST Toolings is a comprehensive suite of web-based utilities designed to streaml
 
 ### Styling
 - **Tailwind CSS 3.3.6** - Utility-first CSS framework
-- **CSS Variables** - Theme-aware color system
+- **CSS Variables** - Theme-aware color system with semantic tokens
 - **PostCSS** - CSS processing
 - **Autoprefixer** - Browser compatibility
+- **Semantic Color Tokens** - Consistent color palette across the application
 
 ### UI Components
 - **Radix UI** - Accessible component primitives
@@ -145,6 +146,14 @@ The application uses a CSS variable-based theming system that automatically adap
 - Semantic color tokens (e.g., `bg-background`, `text-foreground`) ensure consistency
 - Special semantic colors for data types and comparison statuses
 
+**Color Mapping Standards**:
+- **Success** → `status-match` (green)
+- **Errors** → `destructive` (red)
+- **Warnings** → `status-warning` (orange)
+- **Info** → `accent` (Ice Blue)
+
+See the [Color System](#color-system) section below for details.
+
 ### Component Architecture
 - **Page Components** - Main tool components located in `src/` root (kebab-case naming)
 - **UI Components** - Reusable components in `src/components/ui/` (shadcn/ui style)
@@ -177,9 +186,12 @@ The application uses a CSS variable-based theming system that automatically adap
   - `bg-background`, `text-foreground`, `bg-card`, `text-muted-foreground`
   - `bg-type-*` for JSON data types
   - `bg-status-*` for comparison states
+  - `destructive` for errors
+  - `accent` for info/neutral states
 - **Responsive Design**: Use Tailwind breakpoints (`sm:`, `md:`, `lg:`)
 - **Spacing**: Use Tailwind spacing scale (`p-4`, `gap-6`, `space-y-4`)
 - **CSS Variables**: Defined in `index.css` for theme colors
+- **Never use**: Hardcoded Tailwind colors like `text-green-600`, `bg-red-500`, etc.
 
 ### Import Organization
 1. React and React hooks
@@ -217,6 +229,29 @@ import { useTheme } from '@/contexts/ThemeContext';
 - Keyboard navigation support
 - Focus management in modals and drawers
 - Screen reader friendly content
+
+### Color System
+
+The application uses a consistent semantic color system. **Always use semantic tokens, never hardcoded colors.**
+
+**Standard Color Mappings**:
+- **Success/Confirmation** → `status-match` (green) - Use `text-[hsl(var(--status-match))]` or `bg-status-match`
+- **Errors** → `destructive` (red) - Use `text-destructive` or `bg-destructive`
+- **Warnings/Attention** → `status-warning` (orange) - Use `text-[hsl(var(--status-warning))]` or `bg-status-warning`
+- **Info/Neutral** → `accent` (Ice Blue) - Use `text-accent` or `bg-accent`
+
+**Examples**:
+```typescript
+// ✅ CORRECT
+<span className="text-[hsl(var(--status-match))]">Success</span>
+<div className="bg-destructive text-destructive-foreground">Error</div>
+
+// ❌ WRONG - Never use hardcoded colors
+<span className="text-green-600">Success</span>
+<div className="bg-red-500">Error</div>
+```
+
+See `NEW_PAGE_STYLE_GUIDE.md` for complete color system documentation.
 
 ## Development Setup
 

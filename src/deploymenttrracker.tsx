@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Plus, ExternalLink, Copy, Check, MessageSquare, X, Trash2, GitBranch, Search, BarChart3, Download, FileText, FileJson } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 import { PageContainer } from '@/components/ui/page-container';
 import { PageHeader } from '@/components/ui/page-header';
 import { Card } from '@/components/ui/card';
@@ -52,6 +53,7 @@ interface ImportedData {
 }
 
 const PRDeploymentTracker = () => {
+  const { theme } = useTheme();
   const [inputUrls, setInputUrls] = useState('');
   const [cards, setCards] = useState<Card[]>([]);
   const [draggedCard, setDraggedCard] = useState<Card | null>(null);
@@ -1313,7 +1315,7 @@ const PRDeploymentTracker = () => {
   return (
     <PageContainer variant="default" maxWidth="xl">
       {/* Header */}
-      <Card variant="accent" padding="lg" className="mb-6">
+      <Card variant="plain" padding="lg" className="mb-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <PageHeader
             icon={GitBranch}
@@ -1333,7 +1335,12 @@ const PRDeploymentTracker = () => {
             value={inputUrls}
             onChange={(e) => setInputUrls(e.target.value)}
             placeholder="Paste GitHub PR URLs here (one per line)&#10;Example:&#10;https://github.com/owner/repo/pull/123&#10;https://github.com/owner/repo/pull/456"
-            className="h-32 resize-none"
+            className="h-32 resize-none bg-card text-foreground border-2 border-accent focus-visible:ring-0 focus-visible:ring-offset-0"
+            style={{ 
+              boxShadow: theme === 'dark' 
+                ? '0 0 10px hsl(var(--accent) / 0.2)' 
+                : '0 0 10px hsl(var(--accent) / 0.3)'
+            }}
           />
           <button
             onClick={addCards}
@@ -1453,7 +1460,7 @@ const PRDeploymentTracker = () => {
                               In: {columns.find(col => col.id === conflict.existingCard?.column)?.title}
                             </div>
                           ) : (
-                            <div className="text-xs font-medium text-orange-500 dark:text-orange-400 bg-orange-500/10 dark:bg-orange-400/10 px-3 py-1 rounded-full ml-4 whitespace-nowrap border border-orange-500/30 dark:border-orange-400/30">
+                            <div className="text-xs font-medium text-[hsl(var(--status-warning))] bg-[hsl(var(--status-warning)/0.1)] px-3 py-1 rounded-full ml-4 whitespace-nowrap border border-[hsl(var(--status-warning)/0.3)]">
                               NEW
                             </div>
                           )}
@@ -1868,7 +1875,7 @@ const PRDeploymentTracker = () => {
 
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn">
+          <div className="fixed top-4 right-4 bg-[hsl(var(--status-match))] text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn">
             {toastMessage}
           </div>
         )}
@@ -1877,7 +1884,7 @@ const PRDeploymentTracker = () => {
         {duplicateToasts.map((toast, index) => (
           <div 
             key={toast.id}
-            className="fixed right-4 bg-orange-500 text-white px-6 py-4 rounded-lg shadow-lg z-50"
+            className="fixed right-4 bg-[hsl(var(--status-warning))] text-white px-6 py-4 rounded-lg shadow-lg z-50"
             style={{ top: `${4 + index * 7}rem` }}
           >
             <div className="flex items-start justify-between gap-4">
@@ -1897,7 +1904,7 @@ const PRDeploymentTracker = () => {
                   {toast.urls.length > 0 && (
                     <button
                       onClick={() => copyDuplicateUrls(toast.urls, toast.id)}
-                      className="bg-card text-orange-600 dark:text-orange-400 px-3 py-1 rounded text-sm font-medium hover:bg-muted transition-colors"
+                      className="bg-card text-[hsl(var(--status-warning))] px-3 py-1 rounded text-sm font-medium hover:bg-muted transition-colors"
                     >
                       Copy Details
                     </button>
@@ -1905,7 +1912,7 @@ const PRDeploymentTracker = () => {
                   {toast.conflictCount > 0 && conflictingPRs.length > 0 && (
                     <button
                       onClick={() => showConflictModalFromToast(toast.id)}
-                      className="bg-card text-orange-600 dark:text-orange-400 px-3 py-1 rounded text-sm font-medium hover:bg-muted transition-colors"
+                      className="bg-card text-[hsl(var(--status-warning))] px-3 py-1 rounded text-sm font-medium hover:bg-muted transition-colors"
                     >
                       Review Conflicts
                     </button>
@@ -1914,7 +1921,7 @@ const PRDeploymentTracker = () => {
               </div>
               <button
                 onClick={() => removeDuplicateToast(toast.id)}
-                className="text-white hover:text-orange-100 transition-colors"
+                className="text-white hover:text-white/80 transition-colors"
               >
                 <X size={20} />
               </button>

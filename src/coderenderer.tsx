@@ -889,9 +889,9 @@ window.customAlert = function() {
           Log types in the Logs tab:
         </p>
         <div className="text-muted-foreground text-xs space-y-1">
-          <p>• <span className="text-red-600 dark:text-red-400">Error</span> - Red: Runtime errors and exceptions</p>
-          <p>• <span className="text-yellow-600 dark:text-yellow-400">Warning</span> - Yellow: Warnings and deprecations</p>
-          <p>• <span className="text-green-600 dark:text-green-400">Success</span> - Green: Successful operations</p>
+          <p>• <span className="text-[hsl(var(--destructive))]">Error</span> - Red: Runtime errors and exceptions</p>
+          <p>• <span className="text-[hsl(var(--status-warning))]">Warning</span> - Yellow: Warnings and deprecations</p>
+          <p>• <span className="text-[hsl(var(--status-match))]">Success</span> - Green: Successful operations</p>
           <p>• Info - Default: General console.log messages</p>
         </div>
       </div>
@@ -930,7 +930,7 @@ window.customAlert = function() {
             onClick={() => setRenderMode('html')}
             className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
               renderMode === 'html' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-accent text-accent-foreground' 
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
@@ -1126,8 +1126,8 @@ window.customAlert = function() {
                       onClick={() => setActiveEditorTab(tab)}
                       className={`text-sm font-semibold px-4 py-1.5 rounded border transition-all duration-300 relative ${
                         activeEditorTab === tab
-                          ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                          : 'bg-background text-muted-foreground border-border hover:border-blue-400 hover:text-foreground'
+                          ? 'bg-accent text-accent-foreground border-accent shadow-sm'
+                          : 'bg-background text-muted-foreground border-border hover:border-accent hover:text-foreground'
                       }`}
                     >
                       {tab.toUpperCase()}
@@ -1260,9 +1260,9 @@ window.customAlert = function() {
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <span className={`${
-                        log.type === 'error' ? 'text-red-600' :
-                        log.type === 'warn' ? 'text-yellow-600' :
-                        log.type === 'success' ? 'text-green-600' :
+                        log.type === 'error' ? 'text-[hsl(var(--destructive))]' :
+                        log.type === 'warn' ? 'text-[hsl(var(--status-warning))]' :
+                        log.type === 'success' ? 'text-[hsl(var(--status-match))]' :
                         'text-muted-foreground'
                       }`}>
                         <span className="text-muted-foreground">[{log.timestamp}]</span>

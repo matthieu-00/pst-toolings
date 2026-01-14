@@ -821,7 +821,7 @@ export default function JsonExtractor() {
             <span className="truncate text-sm flex-1">{key}</span>
             <span 
               className={`text-xs px-2 py-0.5 rounded bg-muted ${
-                hasTypeMismatch ? 'text-orange-500 dark:text-orange-400' : 'text-muted-foreground'
+                hasTypeMismatch ? 'text-[hsl(var(--status-warning))]' : 'text-muted-foreground'
               }`}
               title={`${stats.count} occurrences across ${jsonData.length} records${hasTypeMismatch ? ' - Mixed types!' : ''}`}
             >
@@ -1041,14 +1041,19 @@ export default function JsonExtractor() {
                 }}
                 onDragLeave={() => setDragActive(false)}
                 onDrop={handleFileDrop}
-                className={`border-2 border-dashed rounded-lg p-4 transition-colors ${
-                  dragActive ? 'border-accent bg-accent/10 animate-pulse' : 'border-border'
+                className={`transition-colors ${
+                  dragActive ? 'bg-accent/10 animate-pulse' : ''
                 }`}
               >
                 <Textarea
                   onChange={(e) => handlePaste(e, false)}
                   placeholder='Paste your JSON data here or drag & drop a JSON file...'
-                  className="h-32 md:h-40 font-mono"
+                  className="h-32 md:h-40 font-mono bg-card text-foreground border-2 border-accent focus-visible:ring-0 focus-visible:ring-offset-0"
+                  style={{ 
+                    boxShadow: theme === 'dark' 
+                      ? '0 0 10px hsl(var(--accent) / 0.2)' 
+                      : '0 0 10px hsl(var(--accent) / 0.3)'
+                  }}
                 />
               </div>
               {error && (
@@ -1064,7 +1069,7 @@ export default function JsonExtractor() {
                 <Textarea
                   onChange={(e) => handlePaste(e, false)}
                   placeholder='Paste Dataset A here...'
-                  className="h-32 md:h-40 bg-card text-foreground border-2 border-accent"
+                  className="h-32 md:h-40 bg-card text-foreground border-2 border-accent focus-visible:ring-0 focus-visible:ring-offset-0"
                   style={{ 
                     boxShadow: theme === 'dark' 
                       ? '0 0 10px hsl(var(--accent) / 0.2)' 
@@ -1082,10 +1087,10 @@ export default function JsonExtractor() {
                 <Textarea
                   onChange={(e) => handlePaste(e, true)}
                   placeholder='Paste Dataset B here...'
-                  className="h-32 md:h-40 bg-card text-foreground border-2 border-accent"
-                  style={{ 
-                    boxShadow: theme === 'dark' 
-                      ? '0 0 10px hsl(var(--accent) / 0.2)' 
+                  className="h-32 md:h-40 bg-card text-foreground border-2 border-accent focus-visible:ring-0 focus-visible:ring-offset-0"
+                  style={{
+                    boxShadow: theme === 'dark'
+                      ? '0 0 10px hsl(var(--accent) / 0.2)'
                       : '0 0 10px hsl(var(--accent) / 0.3)'
                   }}
                 />
@@ -1357,14 +1362,14 @@ export default function JsonExtractor() {
                                 </td>
                                 <td 
                                   className={`px-3 py-2 border-b border-r-2 border-border ${
-                                    analysis.inA ? 'text-foreground bg-blue-500/10' : 'text-muted-foreground'
+                                    analysis.inA ? 'text-foreground bg-[hsl(var(--status-only-a)/0.1)]' : 'text-muted-foreground'
                                   }`}
                                 >
                                   {analysis.inA ? (samplesA.length > 50 ? samplesA.substring(0, 50) + '...' : samplesA || 'null') : '(not in A)'}
                                 </td>
                                 <td 
                                   className={`px-3 py-2 border-b border-border ${
-                                    analysis.inB ? 'text-foreground bg-orange-500/10' : 'text-muted-foreground'
+                                    analysis.inB ? 'text-foreground bg-[hsl(var(--status-only-b)/0.1)]' : 'text-muted-foreground'
                                   }`}
                                 >
                                   {analysis.inB ? (samplesB.length > 50 ? samplesB.substring(0, 50) + '...' : samplesB || 'null') : '(not in B)'}
@@ -1405,7 +1410,7 @@ export default function JsonExtractor() {
                                       title="Copy field path"
                                     >
                                       {copiedField === key ? (
-                                        <Check className="w-3 h-3 text-green-500 animate-scaleIn" />
+                                        <Check className="w-3 h-3 text-[hsl(var(--status-match))] animate-scaleIn" />
                                       ) : (
                                         <Copy className="w-3 h-3" />
                                       )}
@@ -1466,7 +1471,7 @@ export default function JsonExtractor() {
                                         title="Copy value"
                                       >
                                         {copiedField === 'value' ? (
-                                          <Check className="w-3 h-3 text-green-500 animate-scaleIn" />
+                                          <Check className="w-3 h-3 text-[hsl(var(--status-match))] animate-scaleIn" />
                                         ) : (
                                           <Copy className="w-3 h-3" />
                                         )}

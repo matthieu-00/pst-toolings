@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Download, AlertCircle, X, FileSpreadsheet, BarChart3, Filter } from 'lucide-react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import { useTheme } from '@/contexts/ThemeContext';
 import { PageContainer } from '@/components/ui/page-container';
 import { PageHeader } from '@/components/ui/page-header';
 import { Card } from '@/components/ui/card';
@@ -12,6 +13,7 @@ import { Button } from '@/components/ui/button';
 type SpreadsheetRow = Record<string, string | number | null | undefined>;
 
 export default function SpreadsheetComparator() {
+  const { theme } = useTheme();
   const [data1, setData1] = useState<SpreadsheetRow[] | null>(null);
   const [data2, setData2] = useState<SpreadsheetRow[] | null>(null);
   const [headers1, setHeaders1] = useState<string[]>([]);
@@ -421,10 +423,10 @@ ${statistics.mostChangedColumns.map((col, i) => `${i + 1}. ${col.name}: ${col.co
           Column color gradient indicates difference levels:
         </p>
         <div className="text-muted-foreground text-xs space-y-1">
-          <p>• <span className="text-green-600 dark:text-green-400">Green</span> = Identical values</p>
-          <p>• <span className="text-yellow-600 dark:text-yellow-400">Yellow</span> = Minor differences</p>
-          <p>• <span className="text-orange-600 dark:text-orange-400">Orange</span> = Moderate differences</p>
-          <p>• <span className="text-red-600 dark:text-red-400">Red</span> = Major differences</p>
+          <p>• <span className="text-[hsl(var(--status-match))]">Green</span> = Identical values</p>
+          <p>• <span className="text-[hsl(var(--status-warning))]">Yellow</span> = Minor differences</p>
+          <p>• <span className="text-[hsl(var(--status-warning))]">Orange</span> = Moderate differences</p>
+          <p>• <span className="text-[hsl(var(--destructive))]">Red</span> = Major differences</p>
         </div>
         <p className="text-foreground mb-2 mt-3">
           Column letters (A, B, C) are shown for easy Excel-style reference.
@@ -483,16 +485,21 @@ ${statistics.mostChangedColumns.map((col, i) => `${i + 1}. ${col.name}: ${col.co
               />
               <Textarea 
                 placeholder="Or paste CSV/TSV data..."
-                className="w-full text-xs font-mono"
+                className="w-full text-xs font-mono bg-card text-foreground border-2 border-accent focus-visible:ring-0 focus-visible:ring-offset-0"
                 rows={3}
                 onChange={(e) => e.target.value && parsePasted(e.target.value, setData1, setHeaders1, setColLetters1)}
+                style={{ 
+                  boxShadow: theme === 'dark' 
+                    ? '0 0 10px hsl(var(--accent) / 0.2)' 
+                    : '0 0 10px hsl(var(--accent) / 0.3)'
+                }}
               />
-              {data1 && <p className="text-xs text-green-600 mt-1">✓ {data1.length} rows, {headers1.length} columns</p>}
+              {data1 && <p className="text-xs text-[hsl(var(--status-match))] mt-1">✓ {data1.length} rows, {headers1.length} columns</p>}
             </div>
 
             <div className="p-4 border-t md:border-t-0">
               <h3 className="font-semibold mb-2 text-sm flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-500 rounded"></div> Spreadsheet 2
+                <div className="w-3 h-3 bg-accent rounded"></div> Spreadsheet 2
               </h3>
               <Input 
                 type="file" 
@@ -508,11 +515,16 @@ ${statistics.mostChangedColumns.map((col, i) => `${i + 1}. ${col.name}: ${col.co
               />
               <Textarea 
                 placeholder="Or paste CSV/TSV data..."
-                className="w-full text-xs font-mono"
+                className="w-full text-xs font-mono bg-card text-foreground border-2 border-accent focus-visible:ring-0 focus-visible:ring-offset-0"
                 rows={3}
                 onChange={(e) => e.target.value && parsePasted(e.target.value, setData2, setHeaders2, setColLetters2)}
+                style={{ 
+                  boxShadow: theme === 'dark' 
+                    ? '0 0 10px hsl(var(--accent) / 0.2)' 
+                    : '0 0 10px hsl(var(--accent) / 0.3)'
+                }}
               />
-              {data2 && <p className="text-xs text-accent mt-1">✓ {data2.length} rows, {headers2.length} columns</p>}
+              {data2 && <p className="text-xs text-[hsl(var(--status-match))] mt-1">✓ {data2.length} rows, {headers2.length} columns</p>}
             </div>
           </div>
 
@@ -728,9 +740,9 @@ ${statistics.mostChangedColumns.map((col, i) => `${i + 1}. ${col.name}: ${col.co
                             <tr 
                               key={idx}
                               className={`border-b animate-fadeIn transition-colors duration-200 ${
-                                diff.status === 'added' ? 'bg-green-50' :
-                                diff.status === 'removed' ? 'bg-red-50' :
-                                diff.status === 'changed' ? 'bg-yellow-50' : ''
+                                diff.status === 'added' ? 'bg-[hsl(var(--status-match)/0.1)]' :
+                                diff.status === 'removed' ? 'bg-[hsl(var(--destructive)/0.1)]' :
+                                diff.status === 'changed' ? 'bg-[hsl(var(--status-warning)/0.1)]' : ''
                               }`}
                               style={{ animationDelay: `${idx * 20}ms` }}
                             >

@@ -12,6 +12,7 @@ const cardVariants = cva(
         elevated: "rounded-lg border border-border shadow-lg animate-fadeInScale hover:shadow-xl",
         "elevated-xl": "rounded-2xl border border-border shadow-2xl animate-fadeInScale",
         accent: "rounded-lg border-2 border-accent animate-fadeInScale",
+        plain: "rounded-lg border border-border animate-fadeInScale",
       },
       padding: {
         none: "",

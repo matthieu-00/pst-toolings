@@ -250,10 +250,15 @@ Use semantic color tokens, not hardcoded colors:
 
 **Status Colors** (for comparisons/data):
 
-- `bg-status-match` / `text-status-match`
-- `bg-status-differ` / `text-status-differ`
-- `bg-status-warning` / `text-status-warning`
-- `bg-status-only-a` / `bg-status-only-b`
+- `bg-status-match` / `text-status-match` - Success states, identical values, confirmations
+- `bg-status-differ` / `text-status-differ` - Differences in comparisons
+- `bg-status-warning` / `text-status-warning` - Warnings, attention states, moderate differences
+- `bg-status-only-a` / `bg-status-only-b` - Dataset-specific indicators
+
+**Error States**:
+
+- `bg-destructive` / `text-destructive` - Errors, exceptions, failed operations
+- `bg-destructive/10` / `text-destructive` - Error backgrounds with opacity
 
 **Type Colors** (for JSON/data types):
 
@@ -263,6 +268,56 @@ Use semantic color tokens, not hardcoded colors:
 - `bg-type-array` / `text-type-array`
 - `bg-type-object` / `text-type-object`
 - `bg-type-null` / `text-type-null`
+
+### Color Mapping Standards
+
+**IMPORTANT**: Always use semantic tokens. Never use hardcoded Tailwind color classes like `text-green-600`, `bg-red-500`, etc.
+
+**Standard Color Mappings**:
+
+- **Success/Confirmation States** → `status-match` (green)
+  - Use for: Success messages, check icons, confirmation toasts, "identical values" indicators
+  - Example: `text-[hsl(var(--status-match))]` or `bg-status-match`
+
+- **Error States** → `destructive` (red)
+  - Use for: Errors, exceptions, failed operations
+  - Example: `text-destructive` or `bg-[hsl(var(--destructive))]`
+
+- **Warning/Attention States** → `status-warning` (orange)
+  - Use for: Warnings, priority badges, attention states, "moderate differences", minor differences (yellow)
+  - Example: `text-[hsl(var(--status-warning))]` or `bg-status-warning/10`
+
+- **Info/Neutral States** → `accent` (Ice Blue)
+  - Use for: General info states, neutral indicators, button states
+  - Example: `text-accent` or `bg-accent`
+
+- **Dataset Indicators**:
+  - Dataset A → `status-only-a` (blue)
+  - Dataset B → `status-only-b` (orange)
+  - Example: `bg-[hsl(var(--status-only-a)/0.1)]`
+
+**Using Semantic Tokens**:
+
+```typescript
+// ✅ CORRECT - Using semantic tokens
+<span className="text-[hsl(var(--status-match))]">Success</span>
+<div className="bg-destructive text-destructive-foreground">Error</div>
+<button className="bg-accent text-accent-foreground">Info</button>
+
+// ❌ WRONG - Hardcoded colors
+<span className="text-green-600">Success</span>
+<div className="bg-red-500 text-white">Error</div>
+<button className="bg-blue-600 text-white">Info</button>
+```
+
+**Opacity with Semantic Tokens**:
+
+```typescript
+// Use opacity syntax with semantic tokens
+<div className="bg-[hsl(var(--status-match)/0.1)]">Light green background</div>
+<div className="bg-status-warning/10">Light orange background</div>
+<div className="border-[hsl(var(--status-warning)/0.3)]">Semi-transparent border</div>
+```
 
 ### Spacing
 
