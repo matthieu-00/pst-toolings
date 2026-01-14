@@ -7,6 +7,7 @@ import { Code, FileSpreadsheet, GitBranch, Database, Menu, X, Home as HomeIcon }
 import { ThemeProvider } from './contexts/ThemeContext'
 import { ThemeToggle } from './components/ThemeToggle'
 import { Button } from './components/ui/button'
+import { PocketKnifeIcon } from './components/PocketKnifeIcon'
 import { useEffect, useId, useRef, useState } from 'react'
 import './App.css'
 
@@ -18,7 +19,7 @@ function Navigation() {
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null)
   
   const navItems = [
-    { path: '/', label: 'Home', icon: null },
+    { path: '/', label: 'Home', icon: PocketKnifeIcon },
     { path: '/code-renderer', label: 'Code Renderer', icon: Code },
     { path: '/spreadsheet-diff', label: 'Spreadsheet Diff', icon: FileSpreadsheet },
     { path: '/deployment-tracker', label: 'Deployment Tracker', icon: GitBranch },
