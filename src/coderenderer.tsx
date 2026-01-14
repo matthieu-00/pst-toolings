@@ -951,7 +951,7 @@ window.customAlert = function() {
 
       <div className={`flex-1 flex flex-col ${isFullscreen ? '' : 'lg:flex-row'} overflow-hidden`}>
         {!isFullscreen && (
-          <div className="w-full lg:w-1/2 flex flex-col lg:border-r bg-card">
+          <div className="w-full lg:w-1/2 flex flex-col lg:border-r bg-card min-h-0">
             <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/50 min-h-[60px] flex-wrap gap-2">
               <div className="flex gap-2 flex-wrap">
                 {/* Import */}
@@ -1138,10 +1138,10 @@ window.customAlert = function() {
             </div>
             
             {/* CR-EW-03: Line Numbers & CR-EW-06: Editor Enhancements */}
-            <div className="flex-1 flex overflow-hidden relative">
+            <div className="flex-1 flex overflow-x-auto overflow-y-hidden relative min-w-0">
               {showLineNumbers && (
                 <div 
-                  className="bg-muted/30 text-muted-foreground text-xs font-mono py-4 px-2 select-none border-r"
+                  className="bg-muted/30 text-muted-foreground text-xs font-mono py-4 px-2 select-none border-r flex-shrink-0"
                   style={{ fontSize: `${fontSize}px`, lineHeight: `${fontSize * 1.5}px` }}
                 >
                   {(() => {
@@ -1159,12 +1159,13 @@ window.customAlert = function() {
                 ref={textareaRef}
                 value={renderMode === 'combined' ? combinedCode[activeEditorTab as keyof CombinedCode] : code}
                 onChange={(e) => renderMode === 'combined' ? updateCombinedCode(activeEditorTab as keyof CombinedCode, e.target.value) : setCode(e.target.value)}
-                className="flex-1 p-4 font-mono resize-none focus:outline-none bg-background text-foreground border-0"
+                className="flex-1 p-4 font-mono resize-none focus:outline-none bg-background text-foreground border-0 min-w-0"
                 style={{ 
                   fontSize: `${fontSize}px`,
                   lineHeight: `${fontSize * 1.5}px`,
                   whiteSpace: wordWrap ? 'pre-wrap' : 'pre',
-                  overflowWrap: wordWrap ? 'break-word' : 'normal'
+                  overflowWrap: wordWrap ? 'break-word' : 'normal',
+                  minWidth: wordWrap ? '100%' : 'max-content'
                 }}
                 placeholder={renderMode === 'combined' ? `Paste your ${activeEditorTab.toUpperCase()} code here...` : "Paste your code here..."}
                 spellCheck={false}
@@ -1212,7 +1213,7 @@ window.customAlert = function() {
           </div>
         )}
 
-        <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-card' : 'w-full lg:w-1/2'} flex flex-col bg-card`}>
+        <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-card' : 'w-full lg:w-1/2'} flex flex-col bg-card min-h-0`}>
           <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/50">
             <div className="flex gap-2">
               <button
@@ -1247,7 +1248,7 @@ window.customAlert = function() {
               )}
             </Button>
           </div>
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-auto min-h-[300px] lg:min-h-0">
             {activeTab === 'logs' ? (
               <div className="p-4 font-display text-xs space-y-2 animate-fadeIn">
                 {logs.length === 0 ? (

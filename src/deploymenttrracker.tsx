@@ -1621,11 +1621,11 @@ const PRDeploymentTracker = () => {
                   className="pl-10"
                 />
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 flex-wrap">
                 <select
                   value={filterColumn || ''}
                   onChange={(e) => setFilterColumn(e.target.value || null)}
-                  className="px-3 py-2 rounded border border-border bg-background text-foreground text-sm"
+                  className="px-3 py-2 rounded border border-border bg-background text-foreground text-sm w-full sm:w-auto"
                 >
                   <option value="">All Columns</option>
                   {columns.map(col => (
@@ -1636,7 +1636,7 @@ const PRDeploymentTracker = () => {
                   value={filterNotes}
                   onChange={(e) => setFilterNotes(e.target.value)}
                   placeholder="Filter by notes..."
-                  className="w-48"
+                  className="w-full sm:w-48"
                 />
                 {(searchTerm || filterColumn || filterNotes) && (
                   <Button
@@ -1647,6 +1647,7 @@ const PRDeploymentTracker = () => {
                       setFilterColumn(null);
                       setFilterNotes('');
                     }}
+                    className="w-full sm:w-auto"
                   >
                     <X className="w-4 h-4" />
                   </Button>
