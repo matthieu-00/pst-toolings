@@ -51,6 +51,7 @@ export default function LiveCodeRenderer() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [activeTab, setActiveTab] = useState('preview');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<'editor' | 'preview'>('editor');
   const [showClearModal, setShowClearModal] = useState(false);
   const [renderMode, setRenderMode] = useState<'tsx' | 'html' | 'combined'>('tsx');
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
@@ -493,6 +494,10 @@ window.customAlert = function() {
           setRenderedComponent(null as RenderedComponentType);
           addLog('success', 'HTML rendered successfully');
           setIsRendering(false);
+          // Switch to preview panel on mobile after rendering
+          if (window.innerWidth < 1024) {
+            setMobilePanel('preview');
+          }
           return;
         }
 
@@ -630,6 +635,10 @@ window.customAlert = function() {
           
           setHtmlContent(null);
           setIsRendering(false);
+          // Switch to preview panel on mobile after rendering
+          if (window.innerWidth < 1024) {
+            setMobilePanel('preview');
+          }
           return;
         }
 
@@ -723,11 +732,19 @@ window.customAlert = function() {
 
         addLog('success', `Component rendered successfully (${loggedIcons2} icons loaded)`);
         setRenderedComponent(() => Component);
+        // Switch to preview panel on mobile after rendering
+        if (window.innerWidth < 1024) {
+          setMobilePanel('preview');
+        }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);
         setError(errorMessage);
         addLog('error', errorMessage);
         console.error('Render error:', err);
+        // Switch to preview panel on mobile even on error to show error message
+        if (window.innerWidth < 1024) {
+          setMobilePanel('preview');
+        }
       } finally {
         setIsRendering(false);
       }
@@ -950,8 +967,33 @@ window.customAlert = function() {
       </div>
 
       <div className={`flex-1 flex flex-col ${isFullscreen ? '' : 'lg:flex-row'} overflow-hidden`}>
+        {/* Mobile Panel Tabs - only show on mobile when not fullscreen */}
         {!isFullscreen && (
-          <div className="w-full lg:w-1/2 flex flex-col lg:border-r bg-card min-h-0 flex-1">
+          <div className="lg:hidden flex border-b bg-card">
+            <button
+              onClick={() => setMobilePanel('editor')}
+              className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
+                mobilePanel === 'editor'
+                  ? 'bg-accent text-accent-foreground border-b-2 border-accent'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`}
+            >
+              Editor
+            </button>
+            <button
+              onClick={() => setMobilePanel('preview')}
+              className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
+                mobilePanel === 'preview'
+                  ? 'bg-accent text-accent-foreground border-b-2 border-accent'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`}
+            >
+              Preview
+            </button>
+          </div>
+        )}
+        {!isFullscreen && (
+          <div className={`w-full lg:w-1/2 flex flex-col lg:border-r bg-card min-h-0 flex-1 ${mobilePanel !== 'editor' ? 'hidden lg:flex' : ''}`}>
             <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/50 min-h-[60px] flex-wrap gap-2">
               <div className="flex gap-2 flex-wrap">
                 {/* Import */}
@@ -1213,7 +1255,7 @@ window.customAlert = function() {
           </div>
         )}
 
-        <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-card' : 'w-full lg:w-1/2 flex-1'} flex flex-col bg-card min-h-0`}>
+        <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-card' : `w-full lg:w-1/2 flex-1 ${mobilePanel !== 'preview' ? 'hidden lg:flex' : ''}`} flex flex-col bg-card min-h-0`}>
           <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/50">
             <div className="flex gap-2">
               <button
