@@ -50,37 +50,26 @@ function Navigation() {
     <nav className="border-b bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Left: brand/title */}
-          <div className="flex items-center gap-3">
-            <Link
-              to="/"
-              className="text-sm font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap"
-              aria-label="PST Toolings home"
-            >
-              PST Toolings
-            </Link>
-
-            {/* Center (desktop only): nav */}
-            <div className="hidden sm:flex space-x-6">
-              {navItems.map((item) => {
-                const Icon = item.icon
-                const isActive = location.pathname === item.path
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-all duration-200 hover:scale-[1.02] ${
-                      isActive
-                        ? 'border-primary text-primary'
-                        : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
-                    }`}
-                  >
-                    {Icon && <Icon className="w-4 h-4 transition-transform duration-200" />}
-                    {item.label}
-                  </Link>
-                )
-              })}
-            </div>
+          {/* Left (desktop only): nav */}
+          <div className="hidden sm:flex space-x-6">
+            {navItems.map((item) => {
+              const Icon = item.icon
+              const isActive = location.pathname === item.path
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-all duration-200 hover:scale-[1.02] ${
+                    isActive
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
+                  }`}
+                >
+                  {Icon && <Icon className="w-4 h-4 transition-transform duration-200" />}
+                  {item.label}
+                </Link>
+              )
+            })}
           </div>
 
           {/* Right: theme toggle + hamburger (mobile only) */}
@@ -140,8 +129,7 @@ function Navigation() {
               return (
                 <Link
                   key={item.path}
-                  // @ts-expect-error react-router Link forwards to anchor in DOM
-                  ref={idx === 0 ? firstLinkRef : undefined}
+                  {...(idx === 0 ? { ref: firstLinkRef as React.RefObject<HTMLAnchorElement> } : {})}
                   to={item.path}
                   onClick={() => setIsMobileNavOpen(false)}
                   className={`flex items-center gap-3 rounded-md px-3 py-3 text-sm font-medium transition-colors ${
