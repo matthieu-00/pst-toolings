@@ -16,30 +16,30 @@ Example: `CR-EW-01` = Code Renderer Easy Win #1
 
 ### Easy Wins
 
-#### CR-EW-01: Keyboard Shortcuts
+#### CR-EW-01: Keyboard Shortcuts ✓
 - `Ctrl+S` / `Cmd+S` to render
 - `Ctrl+/` to toggle comment
 - `Ctrl+F` for find in editor
 - `Ctrl+Z` / `Ctrl+Y` for undo/redo
 
-#### CR-EW-02: Code Formatting
+#### CR-EW-02: Code Formatting ✓
 - Add "Format Code" button using Prettier or similar
 - Auto-format on paste option
 
-#### CR-EW-03: Line Numbers
+#### CR-EW-03: Line Numbers ✓
 - Toggle line numbers in editor
 - Click line number to set breakpoint (visual only)
 
-#### CR-EW-04: Export Options
+#### CR-EW-04: Export Options ✓
 - Export rendered HTML as downloadable file
 - Export code as file (.tsx, .html, etc.)
 - Share via URL hash (encode code in URL)
 
-#### CR-EW-05: Code Snippets
+#### CR-EW-05: Code Snippets ✓
 - Save/load code snippets to localStorage
 - Quick templates dropdown (React component, HTML page, etc.)
 
-#### CR-EW-06: Editor Enhancements
+#### CR-EW-06: Editor Enhancements ✓
 - Word wrap toggle
 - Font size adjustment
 - Syntax highlighting (using highlight.js or Prism)
@@ -83,33 +83,33 @@ Example: `CR-EW-01` = Code Renderer Easy Win #1
 
 ### Easy Wins
 
-#### JE-EW-01: Field Operations
+#### JE-EW-01: Field Operations ✓
 - Rename fields inline
 - Copy individual field values
 - Copy field path (e.g., `user.address.city`)
 
-#### JE-EW-02: Data Filtering
+#### JE-EW-02: Data Filtering ✓
 - Filter rows by field value
 - Numeric range filters
 - String contains/exact match filters
 
-#### JE-EW-03: Sorting
+#### JE-EW-03: Sorting ✓
 - Sort preview table by any column
 - Multi-column sorting
 - Sort indicator arrows
 
-#### JE-EW-04: Statistics Dashboard
+#### JE-EW-04: Statistics Dashboard ✓
 - Min/max/avg for numeric fields
 - Unique value counts
 - Null percentage per field
 - Data quality score
 
-#### JE-EW-05: Preview Enhancements
+#### JE-EW-05: Preview Enhancements ✓
 - Expandable nested objects/arrays
 - Copy cell value on click
 - Better truncation with "show more" option
 
-#### JE-EW-06: Import Options
+#### JE-EW-06: Import Options ✓
 - Import from URL
 - Import from file (drag & drop)
 - Parse JSON from clipboard automatically
@@ -151,27 +151,27 @@ Example: `CR-EW-01` = Code Renderer Easy Win #1
 
 ### Easy Wins
 
-#### SD-EW-01: Visual Enhancements
+#### SD-EW-01: Visual Enhancements ✓
 - Side-by-side cell comparison view
 - Color-coded cells (green=same, yellow=changed, red=added/removed)
 - Highlight changed cells in column view
 
-#### SD-EW-02: Filter Differences
+#### SD-EW-02: Filter Differences ✓
 - Filter by change type (added/removed/changed)
 - Filter by difference percentage threshold
 - Show only rows with differences
 
-#### SD-EW-03: Statistics Dashboard
+#### SD-EW-03: Statistics Dashboard ✓
 - Summary card: total changes, columns affected, rows affected
 - Change distribution chart
 - Most changed columns list
 
-#### SD-EW-04: Export Enhancements
+#### SD-EW-04: Export Enhancements ✓
 - Export as Excel with color coding
 - Export only changed rows
 - Export summary report (text format)
 
-#### SD-EW-05: Column Operations
+#### SD-EW-05: Column Operations ✓
 - Ignore specific columns from comparison
 - Column mapping (handle renamed columns)
 - Column reordering in export
@@ -214,36 +214,36 @@ Example: `CR-EW-01` = Code Renderer Easy Win #1
 
 ### Easy Wins
 
-#### DT-EW-01: Search & Filter
+#### DT-EW-01: Search & Filter ✓
 - Search cards by title/URL/notes
 - Filter by column
 - Filter by notes containing text
 
-#### DT-EW-02: Bulk Operations
+#### DT-EW-02: Bulk Operations ✓
 - Bulk move selected cards
 - Bulk add notes to selected cards
 - Bulk delete selected cards
 - Bulk edit titles
 
-#### DT-EW-03: Keyboard Shortcuts
+#### DT-EW-03: Keyboard Shortcuts ✓
 - `Ctrl+F` to focus search
 - `Delete` to delete selected cards
 - Arrow keys to move selected cards between columns
 - `Ctrl+A` to select all cards
 
-#### DT-EW-04: Card Enhancements
+#### DT-EW-04: Card Enhancements ✓ (partial - tags/priority/due dates structure added)
 - Card tags/labels (separate from notes)
 - Card priority/urgency indicator
 - Card due dates/deadlines
 - Card archiving (hide without deleting)
 
-#### DT-EW-05: Statistics Dashboard
+#### DT-EW-05: Statistics Dashboard ✓
 - Cards per column count
 - Total cards tracked
 - Cards with notes percentage
 - Recently added cards
 
-#### DT-EW-06: Export Enhancements
+#### DT-EW-06: Export Enhancements ✓
 - Export filtered view only
 - Export as JSON for backup
 - Export as Markdown table
