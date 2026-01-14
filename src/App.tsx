@@ -74,9 +74,8 @@ function Navigation() {
             })}
           </div>
 
-          {/* Right: theme toggle + hamburger (mobile only) */}
-          <div className="flex items-center gap-2 ml-auto">
-            <ThemeToggle />
+          {/* Mobile controls on left, desktop controls on right */}
+          <div className="flex items-center gap-2 sm:ml-auto">
             <button
               ref={menuButtonRef}
               type="button"
@@ -88,6 +87,7 @@ function Navigation() {
             >
               {isMobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
+            <ThemeToggle />
           </div>
         </div>
       </div>
