@@ -3,7 +3,8 @@ import LiveCodeRenderer from './coderenderer'
 import SpreadsheetComparator from './spreadsheetdiff'
 import PRDeploymentTracker from './deploymenttrracker'
 import JsonExtractor from './jsonextractor'
-import { Code, FileSpreadsheet, GitBranch, Database, Menu, X, Home as HomeIcon } from 'lucide-react'
+import MarkdownEditor from './markdown-editor'
+import { Code, FileSpreadsheet, GitBranch, Database, Menu, X, Home as HomeIcon, FileText } from 'lucide-react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ThemeToggle } from './components/ThemeToggle'
@@ -28,6 +29,7 @@ function Navigation() {
     { path: '/spreadsheet-diff', label: 'Spreadsheet Diff', icon: FileSpreadsheet },
     { path: '/deployment-tracker', label: 'Deployment Tracker', icon: GitBranch },
     { path: '/json-extractor', label: 'JSON Extractor', icon: Database },
+    { path: '/markdown-editor', label: 'Markdown Editor', icon: FileText },
   ]
 
   // Filter nav items based on access level
@@ -195,6 +197,13 @@ function Home() {
       icon: Database,
       description: 'Extract and compare JSON data fields with advanced filtering',
       delay: '300ms'
+    },
+    {
+      path: '/markdown-editor',
+      label: 'Markdown Editor',
+      icon: FileText,
+      description: 'Create and edit Markdown files with live preview and export options',
+      delay: '400ms'
     }
   ]
 
@@ -312,6 +321,14 @@ function AppContent() {
             element={
               <ProtectedRoute path="/json-extractor">
                 <JsonExtractor />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/markdown-editor" 
+            element={
+              <ProtectedRoute path="/markdown-editor">
+                <MarkdownEditor />
               </ProtectedRoute>
             } 
           />

@@ -111,3 +111,140 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Markdown Preview Styles */
+.markdown-preview {
+  color: hsl(var(--foreground));
+}
+
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3,
+.markdown-preview h4,
+.markdown-preview h5,
+.markdown-preview h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+  color: hsl(var(--foreground));
+}
+
+.markdown-preview h1 {
+  font-size: 2em;
+  border-bottom: 1px solid hsl(var(--border));
+  padding-bottom: 0.3em;
+}
+
+.markdown-preview h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid hsl(var(--border));
+  padding-bottom: 0.3em;
+}
+
+.markdown-preview h3 {
+  font-size: 1.25em;
+}
+
+.markdown-preview p {
+  margin-bottom: 1em;
+  line-height: 1.7;
+}
+
+.markdown-preview ul,
+.markdown-preview ol {
+  margin-bottom: 1em;
+  padding-left: 2em;
+}
+
+.markdown-preview li {
+  margin-bottom: 0.25em;
+}
+
+.markdown-preview blockquote {
+  border-left: 4px solid hsl(var(--border));
+  padding-left: 1em;
+  margin: 1em 0;
+  color: hsl(var(--muted-foreground));
+}
+
+.markdown-preview code {
+  background: hsl(var(--muted));
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: var(--font-mono), monospace;
+}
+
+.markdown-preview pre {
+  background: hsl(var(--muted));
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.markdown-preview pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdown-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+.markdown-preview th,
+.markdown-preview td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5em 1em;
+  text-align: left;
+}
+
+.markdown-preview th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+}
+
+.markdown-preview img {
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0;
+  border-radius: 4px;
+}
+
+.markdown-preview a {
+  color: hsl(var(--primary));
+  text-decoration: none;
+}
+
+.markdown-preview a:hover {
+  text-decoration: underline;
+}
+
+.markdown-preview hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 2em 0;
+}
+
+.markdown-preview strong {
+  font-weight: 600;
+}
+
+.markdown-preview em {
+  font-style: italic;
+}
+
+/* Focus Mode Styles */
+.focus-mode .markdown-editor-toolbar,
+.focus-mode .markdown-editor-filetree {
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+
+.focus-mode .markdown-editor-toolbar:hover,
+.focus-mode .markdown-editor-filetree:hover {
+  opacity: 1;
+}
