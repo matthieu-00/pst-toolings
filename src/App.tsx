@@ -4,7 +4,8 @@ import SpreadsheetComparator from './spreadsheetdiff'
 import PRDeploymentTracker from './deploymenttrracker'
 import JsonExtractor from './jsonextractor'
 import MarkdownEditor from './markdown-editor'
-import { Code, FileSpreadsheet, GitBranch, Database, Menu, X, Home as HomeIcon, FileText } from 'lucide-react'
+import NrqlHelper from './nrql-helper'
+import { Code, FileSpreadsheet, GitBranch, Database, Menu, X, Home as HomeIcon, FileText, Search } from 'lucide-react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ThemeToggle } from './components/ThemeToggle'
@@ -30,6 +31,7 @@ function Navigation() {
     { path: '/deployment-tracker', label: 'Deployment Tracker', icon: GitBranch },
     { path: '/json-extractor', label: 'JSON Extractor', icon: Database },
     { path: '/markdown-editor', label: 'Markdown Editor', icon: FileText },
+    { path: '/nrql-helper', label: 'NRQL Helper', icon: Search },
   ]
 
   // Filter nav items based on access level
@@ -204,6 +206,13 @@ function Home() {
       icon: FileText,
       description: 'Create and edit Markdown files with live preview and export options',
       delay: '400ms'
+    },
+    {
+      path: '/nrql-helper',
+      label: 'NRQL Helper',
+      icon: Search,
+      description: 'Build and understand NRQL queries with explanations and validation',
+      delay: '500ms'
     }
   ]
 
@@ -329,6 +338,14 @@ function AppContent() {
             element={
               <ProtectedRoute path="/markdown-editor">
                 <MarkdownEditor />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/nrql-helper" 
+            element={
+              <ProtectedRoute path="/nrql-helper">
+                <NrqlHelper />
               </ProtectedRoute>
             } 
           />

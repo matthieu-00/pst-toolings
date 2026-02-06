@@ -17,7 +17,7 @@ export const PIN_CONFIGS: PinConfig[] = [
     accessLevel: {
       id: 'level1',
       name: 'Standard Access',
-      allowedPages: ['/', '/code-renderer', '/spreadsheet-diff', '/json-extractor'],
+      allowedPages: ['/', '/code-renderer', '/spreadsheet-diff', '/json-extractor', '/nrql-helper'],
       allowExports: false,
       allowAllPages: false,
     },
@@ -27,7 +27,7 @@ export const PIN_CONFIGS: PinConfig[] = [
     accessLevel: {
       id: 'level2',
       name: 'Export Enabled',
-      allowedPages: ['/', '/code-renderer', '/spreadsheet-diff', '/json-extractor'],
+      allowedPages: ['/', '/code-renderer', '/spreadsheet-diff', '/json-extractor', '/nrql-helper'],
       allowExports: true,
       allowAllPages: false,
     },
